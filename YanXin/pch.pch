@@ -1,0 +1,47 @@
+//
+//  pch.pch
+//  YanXin
+//
+//  Created by mac on 16/2/18.
+//  Copyright (c) 2016年 mac. All rights reserved.
+//
+
+#ifndef YanXin_pch_pch
+#define YanXin_pch_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "ShouYeViewController.h"
+#import "YanYuanVC.h"
+#import "YanShangVC.h"
+#import "YanYiQuanVC.h"
+#import "MyVC.h"
+#import "AFNetworking.h"//数据请求
+#import "UIKit+AFNetworking.h"//异步加载图片
+#import "Model1.h"
+#import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
+#import "ASIFormDataRequest.h"
+#import "ASIHTTPRequest.h"
+#import "FrameAutoScaleLFL.h"
+#import "UIView+SDAutoLayout.h"
+#import "UIWindow+YzdHUD.h"
+#import "MessageModel.h"
+#import "ShuJuModel.h"
+#import "UITableView+SDAutoTableViewCellHeight.h"
+#import "ZhiFuViewController.h"
+#import "SDWeiXinPhotoContainerView.h"
+#import "NSString+Addtion.h"//清除缓存
+#import "SDCycleScrollView.h"
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "MJRefresh.h"
+#import "LCLoadingHUD.h"
+#import "LCProgressHUD.h"
+#import "BaseLunBoTuVC.h"
+#define KUAN  [UIScreen mainScreen].bounds.size.width
+#define GAO   [UIScreen mainScreen].bounds.size.height
+#define WINDOW [[[UIApplication sharedApplication] delegate] window]
+#define IOS8 [[[UIDevice currentDevice] systemVersion]floatValue]>=8.0
+#define biaoti 19
+#endif
