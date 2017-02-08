@@ -22,7 +22,6 @@
         _image1=[UIImageView new];
         _image2=[UIImageView new];
         _image3=[UIImageView new];
-      //  _label.frame=[FrameAutoScaleLFL CGLFLMakeX:10 Y:5 width:150 height:30];
         _image1.frame=[FrameAutoScaleLFL CGLFLMakeX:15 Y:5 width:gao height:gao];
         _image2.frame=[FrameAutoScaleLFL CGLFLMakeX:25+gao Y:5 width:gao height:gao];
         _image3.frame=[FrameAutoScaleLFL CGLFLMakeX:35+gao+gao Y:5 width:gao height:gao];

@@ -15,6 +15,12 @@
     if (self)
     {
         
+        
+       
+        
+        //姓名
+        _name=[self string:[dic objectForKey:@"name"]];
+        //性别
         NSString * xingbie =[NSString stringWithFormat:@"%@",[dic objectForKey:@"sex"]];
         if ([xingbie isEqualToString:@"0"]) {
             _sex=@"女";
@@ -22,42 +28,93 @@
         {
             _sex=@"男";
         }
-       
-        NSMutableArray * baiqian =[NSMutableArray new];
-        
-        [ShuJuModel huoquyanyuanWihBiaoQian:@"0" success:^(NSDictionary *dic) {
-            NSArray * content =[dic objectForKey:@"content"];
-            for (NSDictionary * dicc in content) {
-               NSString *name= [dicc objectForKey:@"categoryname"];
-                [baiqian addObject:name];
-                
-                NSLog(@"%@",name);
-            }
-            [[NSUserDefaults standardUserDefaults]setObject:baiqian forKey:@"biaoqiankey"];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-        } error:^(NSError *error) {
-            
-        }];
-
-
-        _name=[self string:[dic objectForKey:@"name"]];//[dic objectForKey:@"name"];
         _diqu=[self string:[dic objectForKey:@"cityname"]];//;
-       
-       
-       
-        _biaoqian=[self string:[dic objectForKey:@"categoryname"]];
-        _imageURL=[self string:[dic objectForKey:@"headimgurl"]];
+       //联系方式
         
-        _phoneNumber=[self string:[dic objectForKey:@"connecttel"]];
-        _myjianjie=[self string:[dic objectForKey:@"introduction"]];
+       //地区
+        NSString * sheng =[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"provname"]]];
+        NSString * shi =[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"cityname"]]];
+        NSString * xian =[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"districtname"]]];
+        _diqu=[NSString stringWithFormat:@"%@-%@-%@",sheng,shi,xian];
+        //职业分类
+        _biaoqian=[self string:[dic objectForKey:@"categoryname"]];
+        //个人简介
+       _myjianjie=[self string:[dic objectForKey:@"introduction"]];
+        //个人经历
         _myjingli=[self string:[dic objectForKey:@"experience"]];
-       
+        NSString * yinCang =[self string:[NSString stringWithFormat:@"%@",[dic objectForKey:@"show_connecttel"]]];
+        if ([yinCang isEqualToString:@"0"]) {
+            _phoneNumber=@"***********";
+        }else{
+            _phoneNumber=[self string:[dic objectForKey:@"connecttel"]];
+        }
+        _phone=[self string:[dic objectForKey:@"connecttel"]];
+        //头像
+        _imageURL=[self string:[dic objectForKey:@"headimgurl"]];
+        //是否实名认证（YES，是）
+        NSString * shiming =[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"real_name_status"]]];
+        if ([shiming isEqualToString:@"1"]) {
+            _isShiMing=YES;
+        }else{
+            _isShiMing=NO;
+        }
+        //演信号
+        _yanXinNum=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"promote_code"]]];
+       //vip等级
+        NSString * vip =[NSString stringWithFormat:@"%@",[dic objectForKey:@"viplevel"]];
+        
+        if ([vip isEqualToString:@"0"]) {
+            //没有vip
+            _vipImage=nil;
+        }else if ([vip isEqualToString:@"1"]){
+            //vip1
+            _vipImage=[UIImage imageNamed:@"messege_vip1"];
+        }else if ([vip isEqualToString:@"2"]){
+            //vip2
+            _vipImage=[UIImage imageNamed:@"messege_vip2"];
+        }else if ([vip isEqualToString:@"3"]){
+            //vip3
+            _vipImage=[UIImage imageNamed:@"messege_vip3"];
+        }
+
     }
-    
+    //注册时间
+    _zhuCeTime=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"registtime"]]];
     
     return self;
     
 }
+
+//动态属性
+-(id)initWithDongTaiDic:(NSDictionary*)dic{
+    self=[super init];
+    if (self) {
+        //动态ID
+        _headId=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]]];
+        //头像
+        _headImage=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"headimgurl"]]];
+        //名字
+         _headName=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"name"]]];
+        //实名认证
+         _headRenZheng=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"real_name_status"]]];
+        //发布时间
+         _headTime=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"addtime"]]];
+        //内容
+         _headConent=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"content"]]];
+        //图片数组
+         _headImageArr=[dic objectForKey:@"imgList"];
+        //动态ID
+        _dongTaiID=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]]];
+    }
+    
+    return self;
+}
+
+
+
+
+
+
 //过滤一下
 -(NSString*)string:(id)sss
 {

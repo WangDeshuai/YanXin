@@ -12,17 +12,21 @@
 #import "YanShangModel.h"
 #import "HuiYiShiViewController.h"
 @interface ChangDiVC ()<UITableViewDataSource,UITableViewDelegate,UIScrollViewDelegate,SDCycleScrollViewDelegate>
-{
-    UITableView * _tableView;
-    //引擎类
-    NSMutableArray * _picArr;
-    UIScrollView *smScll;
-    UIPageControl  * _pageControl;
-    NSTimer * _timer;
-    UIView * view1 ;
-    YanShangModel * model;
-}
-@property (nonatomic,retain)NSMutableArray * dataArray;
+//{
+//    UITableView * _tableView;
+//    //引擎类
+//    NSMutableArray * _picArr;
+//    UIScrollView *smScll;
+//    UIPageControl  * _pageControl;
+//    NSTimer * _timer;
+//    UIView * view1 ;
+//    YanShangModel * model;
+//}
+@property(nonatomic,strong)UITableView * tableView;
+@property(nonatomic,strong)NSMutableArray * dataArray;
+@property(nonatomic,assign)int AAA;
+@property (nonatomic, strong) MJRefreshComponent *myRefreshView;
+
 @end
 
 @implementation ChangDiVC
@@ -30,230 +34,171 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor=[UIColor redColor];
-    self.view.backgroundColor=[UIColor yellowColor];
+    self.view.backgroundColor=COLOR;
     self.automaticallyAdjustsScrollViewInsets=NO;
     self.dataArray=[[NSMutableArray alloc]init];
-    _picArr=[[NSMutableArray alloc]init];
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,0, KUAN, GAO) style:UITableViewStylePlain];
-    _tableView.contentInset=UIEdgeInsetsMake(0, 0, 100, 0);
-        _tableView.delegate=self;
-        _tableView.dataSource=self;
-    _tableView.rowHeight=100;
-    _tableView.tableFooterView=[[UIView alloc]initWithFrame:CGRectZero];
-    [self.view addSubview:_tableView];
+    //[self CreatTabelView];
+
+    UILabel * nameLabel =[UILabel new];
+    nameLabel.text=@"版面升级中，敬请期待~";
+    nameLabel.textAlignment=1;
+    nameLabel.textColor=[UIColor blackColor];
+    [self.view sd_addSubviews:@[nameLabel]];
+    nameLabel.sd_layout
+    .leftSpaceToView(self.view,30)
+    .rightSpaceToView(self.view,30)
+    .topSpaceToView(self.view,ScreenHight/2-100)
+    .heightIs(25);
     
     
-     _tableView.footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefresh)];
-     _tableView.header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefresh)];
-    [self jieXi2];
-    [self jieXiData:@"1"];
 }
 
 
--(void)footerRefresh
-{
-    [_tableView.footer endRefreshing];
-    static int a = 1;
-    a=a+1;
-    NSString * conde =[NSString stringWithFormat:@"%d",a];
-    [self jieXiData:conde];
 
-}
--(void)headerRefresh
-{
-    [_tableView.header endRefreshing];
-    [_dataArray removeAllObjects];
-    [self jieXiData:@"1"];
-    [_tableView reloadData];
-    
-}
 
-//数据解析首页滚动视图
--(void)jieXi2
-{
-    NSMutableArray * array =[NSMutableArray new];
 
-    
-    [ShuJuModel getFirstImage:@"4" success:^(NSDictionary *dic) {
-        
-        NSArray *arr2 =[dic objectForKey:@"content"];
-        for (NSDictionary * bgDic2 in arr2){
-            Model1 *model1 = [[Model1 alloc]initWithDic:bgDic2];
-            [_picArr addObject:model1];
-            [array addObject:model1.titleName];
+
+
+#pragma mark --网络请求数据源
+-(void)InteNextDataPage:(NSString*)page{
+    //3演出公司，4演出设备，5演出场地
+    [Engine ChaXunYanShangPage:page Type:@"5" success:^(NSDictionary *dic) {
+        NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
+        if ([code isEqualToString:@"1"]) {
+            NSArray * contentArr =[dic objectForKey:@"content"];
+            NSMutableArray * array2=[NSMutableArray new];
+            for (NSDictionary * dicc in contentArr) {
+                YanShangModel * md =[[YanShangModel alloc]initWithYanChuCommnyDic:dicc];
+                [array2 addObject:md];
+                
+            }
+            if (self.myRefreshView == _tableView.header) {
+                _dataArray = array2;
+                _tableView.footer.hidden = _dataArray.count==0?YES:NO;
+            }else if(self.myRefreshView == _tableView.footer){
+                [_dataArray addObjectsFromArray:array2];
+            }
+            [_tableView reloadData];
+            [_myRefreshView  endRefreshing];
+        }else
+        {
+            [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
         }
-       // [self dingshiqi];
-        [self remoteImageLoaded:array];
     } error:^(NSError *error) {
         
     }];
-
 }
 
 
-//获取网络图片
-- (void)remoteImageLoaded:(NSMutableArray*)array{
+
+#pragma mark --创建表头
+-(UIView*)CreatHeadView{
+    UIView * headView=[UIView new];
+    headView.backgroundColor=[UIColor redColor];
+    headView.sd_layout
+    .leftSpaceToView(self.view,0)
+    .rightSpaceToView(self.view,0)
+    .topSpaceToView(self.view,64)
+    .heightIs(200*ScreenHight/667);
     
-    NSMutableArray * a =[NSMutableArray new];
-    for (int i = 0; i<_picArr.count; i++) {
-        Model1 *m =_picArr[i];
-        [a addObject:m.picUrl];
-    }
-    
-   
- 
-//    BaseLunBoTuVC * banner =[[BaseLunBoTuVC alloc]initWithFrame:CGRectMake(0, 0, KUAN, 200*GAO/667) imageArray:a];
-//    banner.pageType=3;
-//    banner.placeholderImage=[UIImage imageNamed:@"1@2x.jpg"];
-//    banner.titleArray=array;
-//    banner.currentIndexDidTapBlock=^(NSInteger index){
-//        
-//    };
-//    view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KUAN,banner.frame.size.height)];
-//    view1.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:236/255.0 alpha:1];
-//    [view1 addSubview:banner];
-    
-    
-    SDCycleScrollView *cycleScrollView2 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, KUAN, 200*GAO/667) delegate:self placeholderImage:[UIImage imageNamed:@"1@2x.jpg"]];
+    SDCycleScrollView *cycleScrollView2 = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, ScreenWidth, 200*ScreenHight/667) delegate:self placeholderImage:[UIImage imageNamed:@"1@2x.jpg"]];
     cycleScrollView2.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
-    
-    cycleScrollView2.titlesGroup = array;
     cycleScrollView2.currentPageDotColor = [UIColor whiteColor];
-    view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KUAN,cycleScrollView2.frame.size.height)];
-    view1.backgroundColor=[UIColor colorWithRed:236/255.0 green:236/255.0 blue:236/255.0 alpha:1];
-    [view1 addSubview:cycleScrollView2];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cycleScrollView2.imageURLStringsGroup = a;
-    });
-    
+    [headView addSubview:cycleScrollView2];
     
     cycleScrollView2.clickItemOperationBlock = ^(NSInteger index) {
-        // NSLog(@">>>>>  %ld", (long)index);
-        //        ImageBtn* imageVC =[[ImageBtn alloc]init];
-        //        imageVC.hidesBottomBarWhenPushed=YES;
-        //        Model1 * model = _picArr[index];
-        //        imageVC.urlStr=model.jumpUrl;
-        //        [self.navigationController pushViewController:imageVC animated:YES];
-    };
-    
-
-    
-    
-    
-    _tableView.tableHeaderView=view1;
-    //[self buttonYuYue:banner];
-}
-
-
-
-
--(void)jieXiData:(NSString*)yeshu
-{
-    [ShuJuModel huoquSencondType:@"5" yeShu:yeshu success:^(NSDictionary *dic) {
         
-        NSMutableArray * contentArr =[dic objectForKey:@"content"];
-        for (NSDictionary * obDic in contentArr) {
-            model=[[YanShangModel alloc]initWithDic:obDic];
-            [_dataArray addObject:model];
+    };
+    [ShuJuModel getFirstImage:@"4" success:^(NSDictionary *dic) {
+        NSArray *arr2 =[dic objectForKey:@"content"];
+        NSMutableArray * titleArr =[NSMutableArray new];
+        NSMutableArray * picArray =[NSMutableArray new];
+        for (NSDictionary * bgDic2 in arr2){
+            NSString * title =[bgDic2 objectForKey:@"title"];
+            NSString * picUrl =[bgDic2 objectForKey:@"imgurl"];
+            [titleArr addObject:title];
+            [picArray addObject:picUrl];
         }
-        [_tableView reloadData];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            cycleScrollView2.imageURLStringsGroup = picArray;
+        });
+        cycleScrollView2.titlesGroup = titleArr;
+        
     } error:^(NSError *error) {
         
     }];
-}
--(void)dingshiqi
-{
     
-    smScll = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, KUAN, 200*GAO/667)];
-    smScll.pagingEnabled=YES;
-    smScll.showsHorizontalScrollIndicator=NO;
-    smScll.delegate=self;
-    view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KUAN, 200*GAO/667)];
-    _tableView.tableHeaderView=view1;
+    
+    
+    
+    
+    
+    return headView;
+}
+
+
+#pragma mark --创建表
+-(void)CreatTabelView{
+    if (!_tableView) {
+        _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHight-49) style:UITableViewStylePlain];
+    }
+    _tableView.dataSource=self;
+    _tableView.delegate=self;
+    _tableView.backgroundColor=COLOR;
+    _tableView.tableFooterView=[UIView new];
+    _tableView.tableHeaderView=[self CreatHeadView];;
     [self.view addSubview:_tableView];
-    _tableView.tableHeaderView=view1;
+    //刷新操作
+    __weak typeof (self) weakSelf =self;
+    _tableView.header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        NSLog(@"往下拉了");
+        _AAA=1;
+        weakSelf.myRefreshView = weakSelf.tableView.header;
+        [self InteNextDataPage:[NSString stringWithFormat:@"%d",_AAA]];
+    }];
     
-    for (int i =0;i<_picArr.count;i++){
+    // 马上进入刷新状态
+    [_tableView.header beginRefreshing];
+    //..上拉刷新
+    _tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        weakSelf.myRefreshView = weakSelf.tableView.footer;
+        NSLog(@"往上拉了加载更多");
+        _AAA=_AAA+1;
+        [self InteNextDataPage:[NSString stringWithFormat:@"%d",_AAA]];
         
-        Model1 * mmd = _picArr[i];
-        UIButton * imgView = [UIButton buttonWithType:UIButtonTypeCustom];
-        imgView.frame = CGRectMake(KUAN*i, 0, KUAN, 200*GAO/667);
-        [imgView setBackgroundImageForState:UIControlStateNormal withURL:[NSURL URLWithString:mmd.picUrl]];
-        
-        [smScll addSubview:imgView];
-    }
-    smScll.contentSize=CGSizeMake(KUAN*_picArr.count, 0);
-    [view1 addSubview:smScll];
-    _pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake(0,smScll.frame.size.height-15, KUAN, 20)];
-    _pageControl.numberOfPages=_picArr.count;
-    _pageControl.pageIndicatorTintColor=[UIColor whiteColor];
-    _pageControl.currentPageIndicatorTintColor=[UIColor redColor];
-    _pageControl.currentPage=0;
-    [view1 addSubview:_pageControl];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(changeImage) userInfo:nil repeats:YES];
+    }];
+    _tableView.footer.hidden = YES;
 }
-- (void)changeImage
-{
-    static int offset_x = 375;
-    // 判断scrollView是否到达边界位置
-    if ( smScll.contentOffset.x == KUAN*(_picArr.count-1))
-    {
-        //取反
-        offset_x = -KUAN;
-    }
-    // 判断scrollView是否到达边界位置
-    if (smScll.contentOffset.x == 0) {
-        
-        offset_x = KUAN;
-    }
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.5];
-    smScll.contentOffset = CGPointMake(smScll.contentOffset.x+offset_x, 0);
-    _pageControl.currentPage = smScll.contentOffset.x/KUAN;
-    [UIView commitAnimations];
-}
-// 将要开始拖拽
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    // 销毁定时器
-    [_timer invalidate];
-    _timer = nil;
-}
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    if (_timer==nil) {
-        _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(changeImage) userInfo:nil repeats:YES];
-    }
-    int index = scrollView.contentOffset.x/KUAN;
-    _pageControl.currentPage=index;
-}
-//表的方法
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _dataArray.count;
 }
--(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     Custom*cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
     if (!cell) {
         cell=[[Custom alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     }
-    YanShangModel * md =_dataArray[indexPath.row];
-   cell.model=md;
     cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    YanShangModel * yanMd =_dataArray[indexPath.row];
+    cell.model=yanMd;
+    
+    
     return cell;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    
+    return [_tableView cellHeightForIndexPath:indexPath model:_dataArray[indexPath.row] keyPath:@"model" cellClass:[Custom class] contentViewWidth:[ToolClass  cellContentViewWith]];
+}
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    YanShangModel * md =_dataArray[indexPath.row];
-    ChangDier * changdi =[ChangDier new];
-   // HuiYiShiViewController *changdi =[HuiYiShiViewController new];
-    changdi.model=md;
-    changdi.hidesBottomBarWhenPushed=YES;
-    [self.navigationController pushViewController:changdi animated:YES];
+    
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

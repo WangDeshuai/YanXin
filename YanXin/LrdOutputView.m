@@ -50,9 +50,10 @@
         }
         
         _tableView.separatorColor = [UIColor colorWithWhite:0.3 alpha:1];
-        _tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1];
+        _tableView.backgroundColor = [UIColor colorWithWhite:0.2 alpha:.8];
+        
         _tableView.bounces = NO;
-        _tableView.layer.cornerRadius = 2;
+        _tableView.layer.cornerRadius = 5;
         _tableView.scrollEnabled=YES;
         _tableView.delegate = self;
         _tableView.dataSource = self;

@@ -61,7 +61,7 @@
 
 -(void)CreatTableView
 {
-    _tableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 44+64+10, KUAN, GAO-64-44-49) style:UITableViewStylePlain];
+    _tableView =[[UITableView alloc]initWithFrame:CGRectMake(0, 44+64+10, KUAN, GAO-64-44) style:UITableViewStylePlain];
     _tableView.tag=100;
     _tableView.dataSource=self;
     _tableView.delegate=self;
@@ -115,15 +115,16 @@
 -(void)daohang{
     self.view.backgroundColor=[UIColor colorWithRed:223/255.0 green:223/255.0 blue:223/255.0 alpha:1];
     [self.navigationItem setTitle:@"城市选择"];
-    //左按钮
+//    //左按钮
     UIButton*backBtn=[UIButton buttonWithType:UIButtonTypeCustom];
     backBtn.frame=CGRectMake(5,27, 35, 35);
     [backBtn setBackgroundImage:[UIImage imageNamed:@"goback_back_orange_on"] forState:0];
     [backBtn addTarget:self action:@selector(backClink) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem * leftBtn =[[UIBarButtonItem alloc]initWithCustomView:backBtn];
+    backBtn.hidden=YES;
     self.navigationItem.leftBarButtonItem=leftBtn;
 }
 -(void)backClink{
-    [self.navigationController popViewControllerAnimated:YES];
+   // [self.navigationController popViewControllerAnimated:YES];
 }
 @end

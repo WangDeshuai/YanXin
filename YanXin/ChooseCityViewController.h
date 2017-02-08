@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ChooseCityViewController : UIViewController
-//@property (nonatomic,copy)void(^pswNameBlock) (NSString*psw,NSString*shi,NSString*xian);
 @property(nonatomic,copy)void(^shouYeBlock)(NSString*guojia,NSString*ss);
 @property (nonatomic,copy)NSString * messageJie;
 @property (nonatomic,copy)NSString *yuyuebtn;

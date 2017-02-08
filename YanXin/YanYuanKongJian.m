@@ -13,7 +13,7 @@
 #import "WhoYanYuanModel.h"
 #import "UIImageView+LBBlurredImage.h"
 #import "WhoYanYuanModel.h"
-#import "TouSu1.h"
+//#import "TouSu1.h"
 @interface YanYuanKongJian ()<UIScrollViewDelegate>
 {
     UIScrollView * _scrollerView;
@@ -54,7 +54,7 @@
     UILabel * userLabel=[UILabel new];
     NSString * dianhua =nil;
     if (_phone1==nil) {
-        dianhua=_model12.who;
+//        dianhua=_model12.who;
     }else{
         dianhua=_phone1;
     }
@@ -191,7 +191,7 @@
     
     JiBenXinXinViewController *hvc =[[JiBenXinXinViewController alloc]init];
     if(_phone1==nil){
-         hvc.shui=_model12.who;
+       //  hvc.shui=_model12.who;
     }else
     {
         hvc.shui=_phone1;
@@ -203,7 +203,7 @@
     
     HotViewController *kvc =[HotViewController new];
     if(_phone1==nil){
-        kvc.shui=_model12.who;
+       // kvc.shui=_model12.who;
     }else
     {
         kvc.shui=_phone1;
@@ -215,7 +215,7 @@
     XiangCeVC *xvc =[XiangCeVC new];
     xvc.DeLiSelf=self;
     if(_phone1==nil){
-        xvc.shui=_model12.who;
+      //  xvc.shui=_model12.who;
     }else
     {
         xvc.shui=_phone1;
@@ -257,8 +257,8 @@
 }
 -(void)tousu
 {
-    TouSu1 * ss =[TouSu1 new];
-    [self.navigationController pushViewController:ss animated:YES];
+//    TouSu1 * ss =[TouSu1 new];
+//    [self.navigationController pushViewController:ss animated:YES];
 }
 -(void)buttonclint:(UIButton*)button
 {

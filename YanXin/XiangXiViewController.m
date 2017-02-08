@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor=[UIColor whiteColor];
+    self.view.backgroundColor=COLOR;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:biaoti]}];
     self.title=_model.titleName;
     _bigScroller =[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, KUAN, GAO)];

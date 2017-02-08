@@ -10,28 +10,21 @@
 
 @implementation FirstCustom
 
-- (void)awakeFromNib {
-    // Initialization code
-}
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
++(instancetype)cellWithTableView:(UITableView*)tableView CellID:(NSString*)cellID{
+    FirstCustom * cell =[tableView dequeueReusableCellWithIdentifier:cellID];
+    if (!cell) {
+        cell=[[FirstCustom alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        
+    }
+    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    return cell;
+}
+-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    
+    self=[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-//        _image1=[[UIImageView alloc]init];
-//        [self.contentView addSubview:_image1];
-//        
-//        _lab1=[[UILabel alloc]init];
-//        [self.contentView addSubview:_lab1];
-//        
-//        _lab2=[[UILabel alloc]init];
-//        [self.contentView addSubview:_lab2];
-//        
-//        _lab3=[[UILabel alloc]init];
-//        [self.contentView addSubview:_lab3];
-        
         [self setup];
-        
     }
     return self;
 }
@@ -79,7 +72,7 @@
     .topSpaceToView(_lab1,0)
     .leftEqualToView(_lab1)
     .rightSpaceToView(bg,10)
-    .autoHeightRatio(0);
+    .heightIs(20);
     
     _lab3.sd_layout
     .topSpaceToView(_lab2,0)
@@ -96,7 +89,7 @@
    [_image1 sd_setImageWithURL:[NSURL URLWithString:_model.imageview] placeholderImage:[UIImage imageNamed:@"1.jpg"]];
      _lab1.text=_model.titleLabel;
      _lab2.text=_model.neirongLabel;
-     _lab3.text=_model.nowTime;
+    _lab3.text=[NSString stringWithFormat:@"演出时间: %@",_model.fabuTime];
     
    // NSLog(@"我就看这名字%@",_model.titleLabel);
     [self isAchievement];

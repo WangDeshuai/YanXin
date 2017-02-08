@@ -15,33 +15,39 @@
 #import "YanYuanVC.h"
 #import "YanShangVC.h"
 #import "YanYiQuanVC.h"
-#import "MyVC.h"
 #import "AFNetworking.h"//数据请求
 #import "UIKit+AFNetworking.h"//异步加载图片
 #import "Model1.h"
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"
-#import "ASIFormDataRequest.h"
-#import "ASIHTTPRequest.h"
 #import "FrameAutoScaleLFL.h"
 #import "UIView+SDAutoLayout.h"
 #import "UIWindow+YzdHUD.h"
 #import "MessageModel.h"
 #import "ShuJuModel.h"
 #import "UITableView+SDAutoTableViewCellHeight.h"
-#import "ZhiFuViewController.h"
 #import "SDWeiXinPhotoContainerView.h"
 #import "NSString+Addtion.h"//清除缓存
 #import "SDCycleScrollView.h"
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import "MJRefresh.h"
-#import "LCLoadingHUD.h"
 #import "LCProgressHUD.h"
-#import "BaseLunBoTuVC.h"
+#import "ToolClass.h"
+#import "Engine.h"
+#import "MMZCViewController.h"
 #define KUAN  [UIScreen mainScreen].bounds.size.width
 #define GAO   [UIScreen mainScreen].bounds.size.height
+//119.29.83.154  192.168.1.103
+#define SER_VICE @"http://119.29.83.154:8080/YanXinManage/"
+#define ScreenWidth CGRectGetMaxX([UIScreen mainScreen].bounds)
+#define ScreenHight CGRectGetMaxY([UIScreen mainScreen].bounds)
 #define WINDOW [[[UIApplication sharedApplication] delegate] window]
 #define IOS8 [[[UIDevice currentDevice] systemVersion]floatValue]>=8.0
-#define biaoti 19
+#define biaoti 18
+#define NSUSE_DEFO [NSUserDefaults standardUserDefaults]
+#define JXColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
+#define COLOR  [UIColor colorWithRed:236/255.0 green:236/255.0 blue:236/255.0 alpha:1]
+#define DAO_COLOR  [UIColor colorWithRed:17/255.0 green:115/255.0 blue:2548/255.0 alpha:1]
+//
 #endif

@@ -194,9 +194,9 @@
 //获取验证码
 -(void)btnnn:(UIButton*)sender
 {
-    [LCLoadingHUD showLoading:@"获取验证码..."];
+   // [LCLoadingHUD showLoading:@"获取验证码..."];
     [ShuJuModel zhuceDuanXinYanZheng:userName.text success:^(NSDictionary *dic) {
-         [LCLoadingHUD hideInKeyWindow];
+       //  [LCLoadingHUD hideInKeyWindow];
         NSString*codee=  [NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
         if ([codee isEqualToString:@"1"]) {
             //实现倒计时
@@ -245,11 +245,11 @@
 }
 -(void)tijao
 {
-    [LCLoadingHUD showLoading:@"正在提交..."];
+    //[LCLoadingHUD showLoading:@"正在提交..."];
    
     
     [ShuJuModel zhaohuimima:userName.text pswWord:pswName.text YanzhengM:yanzhengName.text success:^(NSDictionary *dic) {
-         [LCLoadingHUD hideInKeyWindow];
+     //    [LCLoadingHUD hideInKeyWindow];
       NSString* code=  [NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
         if ([code isEqualToString:@"1"]) {
             [WINDOW showHUDWithText:[dic objectForKey:@"msg"] Type:ShowPhotoYes Enabled:YES];

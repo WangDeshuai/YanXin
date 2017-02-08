@@ -220,8 +220,8 @@
             
         }];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"升级演员" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            ZhiFuViewController * vc =[ZhiFuViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
+//            ZhiFuViewController * vc =[ZhiFuViewController new];
+//            [self.navigationController pushViewController:vc animated:YES];
             
             
         }];

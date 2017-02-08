@@ -84,17 +84,17 @@
     NSString *d =[[NSUserDefaults standardUserDefaults]objectForKey:@"username"];
     if (b==nil) {
         b=@"";
-        [LCLoadingHUD hideInKeyWindow];
+       // [LCLoadingHUD hideInKeyWindow];
         [WINDOW showHUDWithText:@"请填写完信息" Type:ShowPhotoNo Enabled:YES];
         return;
     } if(a==nil){
         a=@"";
-          [LCLoadingHUD hideInKeyWindow];
+       //   [LCLoadingHUD hideInKeyWindow];
         [WINDOW showHUDWithText:@"请填写完信息" Type:ShowPhotoNo Enabled:YES];
         return;
     } if (c==nil){
         c=@"";
-          [LCLoadingHUD hideInKeyWindow];
+        //  [LCLoadingHUD hideInKeyWindow];
         [WINDOW showHUDWithText:@"请填写完信息" Type:ShowPhotoNo Enabled:YES];
         return;
     }if (d==nil) {
@@ -224,9 +224,9 @@
 
     AFHTTPRequestOperationManager *manager1 = [AFHTTPRequestOperationManager manager];
     [manager1 POST:urlstr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSData * data =[NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-//        NSString * str =[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-       // NSLog(@"轮播图%@",str);
+        NSData * data =[NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString * str =[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"轮播图%@",str);
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -325,19 +325,34 @@
     } if (xian==nil){
         xian=@"";
     }
+//    
+//    if (sheng) {
+//       
+//    }
+//    if (shi) {
+//        
+//    }
+//    if (xian) {
+//        
+//    }
     [dicc setObject:page forKey:@"pageIndex"];
     [dicc setObject:type forKey:@"type"];
     [dicc setObject:sheng forKey:@"provname"];
     [dicc setObject:shi forKey:@"cityname"];
     [dicc setObject:xian forKey:@"districtname"];
+   
+   
     
     [manage POST:urlstr parameters:dicc success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        //NSDictionary * diccc = [NSJSONSerialization JSONObjectWithData:responseObject options:NSJSONReadingMutableContainers error:nil];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"查询首页演出公告%@",str);
         aSuccess(responseObject);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+         NSLog(@"查询首页演出公告%@",error);
+         [LCProgressHUD  hide];
     }];
 //
     
@@ -485,9 +500,9 @@
     [manager POST:urlstr parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         
-//        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-//        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-//        NSLog(@"演员数据%@",str);
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"演艺圈数据%@",str);
         
         
         
@@ -555,6 +570,10 @@
     [dicc setObject:fenlei  forKey:@"category"];
     
     [manager POST:urlstr parameters:dicc success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData * data =[NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"演员分类%@",str);
+
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -652,6 +671,9 @@
      NSString * urlstr =[NSString stringWithFormat:@"%@YanXinManage/admDivison/qryAllProvince.action",FUWU];
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
     [manager POST:urlstr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",str);
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -662,6 +684,9 @@
      NSString * urlstr =[NSString stringWithFormat:@"%@YanXinManage/admDivison/qryCitiesByProvinceName.action",FUWU];
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
     [manager POST:urlstr parameters:@{@"provinceName":name} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",str);
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -675,7 +700,13 @@
     NSString * urlstr =[NSString stringWithFormat:@"%@YanXinManage/admDivison/qryDistrictsByCityName.action",FUWU];
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
     [manager POST:urlstr parameters:@{@"cityName":cityName} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"%@",str);
          aSuccess(responseObject);
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
     }];
@@ -723,6 +754,9 @@
     }
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
     [manager POST:urlstr parameters:@{@"praccount":a,@"dyid":qid} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"上传点赞%@",str);
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -839,6 +873,7 @@
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
    // NSLog(@">>>%@",urlstr);
     [manager GET:urlstr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -867,6 +902,9 @@
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
      NSLog(@"删除动态的>>>%@",urlstr);
     [manager GET:urlstr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *str = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"删除动态%@",str);
         aSuccess(responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

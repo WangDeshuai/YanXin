@@ -13,7 +13,6 @@
 #import "PictureCollectionViewCell.h"
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
-#import "LCLoadingHUD.h"
 
 @interface PublishVC ()<UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,MJPhotoBrowserDelegate>
 {
@@ -29,7 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
    
-    self.title=@"发布动态";
+    self.title=@"发表动态";
     self.view.backgroundColor=[UIColor colorWithRed:222/255.0 green:222/255.0 blue:222/255.0 alpha:1];
     self.automaticallyAdjustsScrollViewInsets=NO;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -45,7 +44,7 @@
     //右按钮
     UIButton * rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     rightBtn.frame=CGRectMake(0, 3,40, 20);
-    [rightBtn setTitle:@"发布" forState:0];
+    [rightBtn setTitle:@"发表" forState:0];
     [rightBtn addTarget:self action:@selector(bianJiBtn) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem * right =[[UIBarButtonItem alloc]initWithCustomView:rightBtn];
     self.navigationItem.rightBarButtonItem=right;
@@ -345,27 +344,30 @@
 //    }
 //    
     
-     [LCLoadingHUD showLoading:@"正在发布,请稍后..."];
+    // [LCLoadingHUD showLoading:@"正在发布,请稍后..."];
     if ([self.neirongTF.text isEqualToString:@"这一刻你的想法..."]) {
         NSLog(@"没东西");
         self.neirongTF.text=@"";
     }
-   // NSLog(@"这是东西%@",self.neirongTF.text);
+//    if (self.neirongTF.text.length==0 || self.neirongTF.text==nil || [self.neirongTF.text isEqualToString:@""]) {
+//        [LCProgressHUD showMessage:@"请填写内容"];
+//    }else{
+        [ShuJuModel publishNeirong:self.neirongTF.text Image:self.itemsSectionPictureArray success:^(NSDictionary *dic) {
+            
+            NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
+            if ([code isEqualToString:@"1"]) {
+                // [WINDOW showHUDWithText:@"发布成功" Type:ShowPhotoYes Enabled:YES];
+                [LCProgressHUD showMessage:@"发布成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            
+        } error:^(NSError *error) {
+            
+        }];
+ 
+    //}
     
-    [ShuJuModel publishNeirong:self.neirongTF.text Image:self.itemsSectionPictureArray success:^(NSDictionary *dic) {
-       
-        NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
-        if ([code isEqualToString:@"1"]) {
-            [WINDOW showHUDWithText:@"发布成功" Type:ShowPhotoYes Enabled:YES];
-             [LCLoadingHUD hideInKeyWindow];
-             NSLog(@"发布成功");
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-      
-  } error:^(NSError *error) {
-      
-  }];
-
+ 
 }
 
 //- (IBAction)zhaopianBtn:(UIButton *)sender {

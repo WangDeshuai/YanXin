@@ -112,8 +112,8 @@
     //pwd.keyboardType=UIKeyboardTypeNumberPad;
 
     
-    UIImageView *userImageView=[self createImageViewFrame:CGRectMake(20, 10, 25, 25) imageName:@"ic_landing_nickname" color:nil];
-    UIImageView *pwdImageView=[self createImageViewFrame:CGRectMake(20, 60, 25, 25) imageName:@"mm_normal" color:nil];
+    UIImageView *userImageView=[self createImageViewFrame:CGRectMake(20, 13, 20, 20) imageName:@"login_admin" color:nil];
+    UIImageView *pwdImageView=[self createImageViewFrame:CGRectMake(20, 63, 35/2, 43/2) imageName:@"login_password" color:nil];
     UIImageView *line1=[self createImageViewFrame:CGRectMake(20, 50, bgView.frame.size.width-40, 1) imageName:nil color:[UIColor colorWithRed:180/255.0f green:180/255.0f blue:180/255.0f alpha:.3]];
     
     [bgView addSubview:user];
@@ -321,72 +321,82 @@
     return btn;
 }
 
-
-//登录
--(void)landClick
-{
-    
-   
-//    
-//    if ([user.text isEqualToString:@""])
-//    {
-//        [WINDOW showHUDWithText:@"登录失败" Type:ShowPhotoNo Enabled:YES];
-//        return;
-//    }
-//    else if (user.text.length <11)
-//    {
-//        [WINDOW showHUDWithText:@"登录失败" Type:ShowPhotoNo Enabled:YES];
-//        return;
-//    }
-//    else if ([pwd.text isEqualToString:@""])
-//    {
-//        [WINDOW showHUDWithText:@"登录失败" Type:ShowPhotoNo Enabled:YES];
-//        return;
-//    }
-//    else if (pwd.text.length <1)
-//    {
-//         [WINDOW showHUDWithText:@"登录失败" Type:ShowPhotoNo Enabled:YES];
-//        return;
-//    }else
-//    {
-//      
-         [LCLoadingHUD showLoading:@"登录中请稍后..."];
-       [ShuJuModel dengLuWithUseName:user.text password:pwd.text success:^(NSDictionary *dic) {
-           
-           NSString * code =[dic objectForKey:@"code"];
-           NSString * codee =[NSString stringWithFormat:@"%@",code];
-           if ([codee isEqualToString:@"1"]) {
-               
-               NSDictionary * dicc =[dic objectForKey:@"content"];
-               NSDictionary * userInfo =[dicc objectForKey:@"userInfo"];
-               NSString * registId=[NSString stringWithFormat:@"%@",[userInfo objectForKey:@"regist_id"]];
-               [self JpushAlias:registId];
-               
-               //登陆成功后服务器会返回用户信息，把其中的用户名存储起来,加以判断是否登陆
-               [[NSUserDefaults standardUserDefaults] setObject:user.text forKey:@"username"];
-               [[NSUserDefaults standardUserDefaults] synchronize];
-               [WINDOW showHUDWithText:@"登录成功" Type:ShowPhotoYes Enabled:YES];
-               [LCLoadingHUD hideInKeyWindow];
-               [self dismissViewControllerAnimated:YES completion:nil];
-           }else
-           {
-               
-               [WINDOW showHUDWithText:[dic objectForKey:@"msg"] Type:ShowPhotoNo Enabled:YES];
-                [LCLoadingHUD hideInKeyWindow];
-           }
- 
-           
-           
-       } error:^(NSError *error) {
-           
-       }];
+#pragma mark --登录按钮
+-(void)landClick{
+    [LCProgressHUD showLoading:@"正在登录..."];
+    [Engine loginMessageAccount:user.text Password:pwd.text success:^(NSDictionary *dic) {
+        [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
+        NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
+        if ([code isEqualToString:@"1"]) {
+            NSDictionary * contentDic =[dic objectForKey:@"content"];
+            NSDictionary * userInfoDic =[contentDic objectForKey:@"userInfo"];
+            //取出个人简介,看看有没有个人简介
+            NSString * str =[ToolClass isString:[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"introduction"]]];
+            if ([str isEqualToString:@""] || str==nil) {
+                //没有个人简介，说明没有填写演员资料
+            }else{
+                //有个人简介就存条数据
+                [NSUSE_DEFO setObject:@"有个人简介" forKey:@"有个人简介"];
+                [NSUSE_DEFO synchronize];
+            }
+            
+            
+            //取出regist_id，推送用
+            NSString * registId=[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"regist_id"]];
+            [self JpushAlias:registId];
+            //取出手机号用来判断是否登录
+            [NSUSE_DEFO setObject:[ToolClass isString:[userInfoDic objectForKey:@"account"]] forKey:@"username"];
+            [NSUSE_DEFO setObject:[ToolClass isString:[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"usertype"]]] forKey:@"VIP"];
+            [NSUSE_DEFO synchronize];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }else
+        {
+            [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
+        }
         
         
+    } error:^(NSError *error) {
         
-        
-    //}
-    
+    }];
 }
+////登录
+//-(void)landClick
+//{
+//    
+//   
+//
+//       [ShuJuModel dengLuWithUseName:user.text password:pwd.text success:^(NSDictionary *dic) {
+//           
+//           NSString * code =[dic objectForKey:@"code"];
+//           NSString * codee =[NSString stringWithFormat:@"%@",code];
+//           if ([codee isEqualToString:@"1"]) {
+//               
+//               NSDictionary * dicc =[dic objectForKey:@"content"];
+//               NSDictionary * userInfo =[dicc objectForKey:@"userInfo"];
+//               NSString * registId=[NSString stringWithFormat:@"%@",[userInfo objectForKey:@"regist_id"]];
+//               [self JpushAlias:registId];
+//               
+//               //登陆成功后服务器会返回用户信息，把其中的用户名存储起来,加以判断是否登陆
+//               [[NSUserDefaults standardUserDefaults] setObject:user.text forKey:@"username"];
+//               [[NSUserDefaults standardUserDefaults] synchronize];
+//               [WINDOW showHUDWithText:@"登录成功" Type:ShowPhotoYes Enabled:YES];
+//              // [LCLoadingHUD hideInKeyWindow];
+//               [self dismissViewControllerAnimated:YES completion:nil];
+//           }else
+//           {
+//               
+//               [WINDOW showHUDWithText:[dic objectForKey:@"msg"] Type:ShowPhotoNo Enabled:YES];
+//              //  [LCLoadingHUD hideInKeyWindow];
+//           }
+// 
+//           
+//           
+//       } error:^(NSError *error) {
+//           
+//       }];
+//        
+
+//}
 
 //注册
 -(void)zhuce

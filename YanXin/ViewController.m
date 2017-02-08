@@ -11,6 +11,7 @@
 #import "JPUSHService.h"
 #import "AppDelegate.h"
 #import "YanYiQuanVC.h"
+#import "MineVC.h"
 @interface ViewController ()
 {
    YanYiQuanVC *  qvc;
@@ -162,7 +163,7 @@
     
    
 //我的
-    MyVC*  avc = [[MyVC alloc]init];
+    MineVC*  avc = [[MineVC alloc]init];
     nav5 = [[UINavigationController alloc]initWithRootViewController:avc];
     UIImage * aimag1 = [[UIImage imageNamed:@"我"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     UIImage * aimag2 =[[UIImage imageNamed:@"蓝-我"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];

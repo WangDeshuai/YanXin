@@ -80,6 +80,8 @@
     .heightIs(20);
     [_timeLable setSingleLineAutoResizeWithMaxWidth:150];
     [self setupAutoHeightWithBottomView:_timeLable bottomMargin:10];
+    
+    
 }
 -(void)setModel:(CommentModel *)model
 {

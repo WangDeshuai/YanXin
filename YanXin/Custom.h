@@ -14,5 +14,6 @@
 @property (nonatomic,retain)UIImageView * lineImage;
 @property (nonatomic,retain)UILabel * jianJieLab;
 @property (nonatomic,retain)UIImageView * VIPImage;
+@property (nonatomic,strong)UIImageView * renZhengImage;
 @property (nonatomic,retain)YanShangModel * model;
 @end

@@ -248,7 +248,7 @@
         {
             xb=@"1";
         }
-         [LCLoadingHUD showLoading:@"正在保存,请稍后..."];
+      //   [LCLoadingHUD showLoading:@"正在保存,请稍后..."];
         if ([_shoujihao.text isEqualToString:@""]) {
             [self presentViewController:alerview animated:YES completion:nil];
             return;
@@ -263,7 +263,7 @@
                  if ([code isEqualToString:@"1"])
                  {
                      NSLog(@"保存成功");
-                      [LCLoadingHUD hideInKeyWindow];
+                 //     [LCLoadingHUD hideInKeyWindow];
                      [self.navigationController popViewControllerAnimated:YES];
                  }
             
@@ -306,19 +306,14 @@
                     [self presentViewController:alerview animated:YES completion:nil];
                     return;
                 }
-                [LCLoadingHUD showLoading:@"正在保存,请稍后..."];
-               // NSLog(@"wwww%@",data);
-//                NSString*a=  [[NSUserDefaults standardUserDefaults]objectForKey:@"xian1"];
-//                NSString*b=  [[NSUserDefaults standardUserDefaults]objectForKey:@"shi1"];
-//                NSString*c= [[NSUserDefaults standardUserDefaults]objectForKey:@"sheng1"];
-//               NSString *  sDiquname =[NSString stringWithFormat:@"%@-%@-%@",c,b,a];
+            //    [LCLoadingHUD showLoading:@"正在保存,请稍后..."];
                 
                 [ShuJuModel saveMyMessageWithName:self.nameTF.text xingbie:xb address:Diquname identity:@"2" biaoqian:bq myjianjie:_myJianjieTF.text myjingli:_myJingLiTF.text lineimage:data phoneNumber:_shoujihao.text success:^(NSDictionary *dic) {
                     NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
                     if ([code isEqualToString:@"1"])
                     {
                         NSLog(@"保存成功");
-                         [LCLoadingHUD hideInKeyWindow];
+                       //  [LCLoadingHUD hideInKeyWindow];
                         [self.navigationController popViewControllerAnimated:YES];
                     }
                     

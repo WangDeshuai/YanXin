@@ -15,6 +15,7 @@
 #import "UIButtonImageWithLable.h"
 #import "JPUSHService.h"
 #import "CommentsViewController.h"
+#import "YanYuanXiangQingVC.h"
 #define kTimeLineTableViewCellId @"SDTimeLineCell"
 static CGFloat textFieldH = 40;
 
@@ -52,9 +53,6 @@ static CGFloat textFieldH = 40;
         // 获取通知中心,添加观察者
         [_geshuArr removeAllObjects];
         _geshuArr=[NSMutableArray new];
-//        self.navigationController.navigationBar.barTintColor=[UIColor colorWithRed:0/255.0 green:170/255.0 blue:238/255.0 alpha:1];
-//        [self.view addSubview:[self tv]];
-       // NSLog(@"wwwwwwwwwwwwwwwwwww");
        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeColor:) name:@"123456" object:nil];
        
         
@@ -64,9 +62,14 @@ static CGFloat textFieldH = 40;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [_textField resignFirstResponder];
+    [_textField removeFromSuperview];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication].keyWindow addSubview:_textField];
+    
+    [_textField becomeFirstResponder];
+    [_textField resignFirstResponder];
   NSString*s=[[NSUserDefaults standardUserDefaults]objectForKey:@"Jpush"];
     if (s) {
          _tableView.tableHeaderView=[self headTableview:_geshuArr];
@@ -85,7 +88,7 @@ static CGFloat textFieldH = 40;
     
     self.view.backgroundColor=[UIColor grayColor];
     self.title=@"演艺圈";
-    self.navigationController.navigationBar.barTintColor=[UIColor colorWithRed:0/255.0 green:170/255.0 blue:238/255.0 alpha:1];
+    self.navigationController.navigationBar.barTintColor=DAO_COLOR;
   //  self.tabBarItem.badgeValue=nil;
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:biaoti]}];
     moArr=[[NSMutableArray alloc]init];
@@ -127,19 +130,21 @@ static CGFloat textFieldH = 40;
     _textField.backgroundColor = [UIColor whiteColor];
     _textField.frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height, self.view.width, textFieldH);
     [[UIApplication sharedApplication].keyWindow addSubview:_textField];
-    
+   
     [_textField becomeFirstResponder];
     [_textField resignFirstResponder];
 }
+
+
 -(UITableView*)tv{
   
 //    UIButton * btn =[UIButton buttonWithType:UIButtonTypeCustom];
 //    btn.backgroundColor=[UIColor redColor];
 //    btn.frame=CGRectMake(KUAN/2-60, 64, 120, 30);
 //    [self.view addSubview:btn];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"导航"] forBarMetrics:3];
+    //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"导航"] forBarMetrics:3];
     if (!_tableView) {
-        _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, KUAN, GAO) style:UITableViewStylePlain];
+        _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHight) style:UITableViewStylePlain];
         _tableView.delegate=self;
         _tableView.dataSource=self;
         [_tableView registerClass:[YYQTableViewCell class] forCellReuseIdentifier:kTimeLineTableViewCellId];
@@ -153,11 +158,6 @@ static CGFloat textFieldH = 40;
             aaa=1;
             [self jiexiData:[NSString stringWithFormat:@"%d",aaa]];
           //  NSLog(@"往下拉了");
-//            NSString* ss=[[NSUserDefaults standardUserDefaults]objectForKey:@"Jpush"];
-//            if (ss) {
-//                self.tabBarItem.badgeValue=@"1";
-//                _tableView.tableHeaderView=[self headTableview];
-//            }
 
         }];
         
@@ -237,6 +237,7 @@ static CGFloat textFieldH = 40;
     
     
 }
+#pragma mark --获取演艺圈动态
 -(void)jiexiData:(NSString*)page
 {
     [ShuJuModel huoquWithPage:page Tiaoshu:@"10" success:^(NSDictionary *dic) {
@@ -309,26 +310,26 @@ static CGFloat textFieldH = 40;
     return [resArr copy];
 }
 
--(void)headerRefresh
-{
-    [_tableView.header endRefreshing];
-    aaa=1;
-      [dataArr removeAllObjects];
-      [_tableView reloadData];
-      [self jiexiData:@"1"];
-  
-}
--(void)footerRefresh
-{
-    [_tableView.footer endRefreshing];
-//    static int a = 1;
-//    a=a+1;
-     aaa++;
-    NSString * conde =[NSString stringWithFormat:@"%d",aaa];
-     //[dataArr removeAllObjects];
-    [self jiexiData:conde];
-
-}
+//-(void)headerRefresh
+//{
+//    [_tableView.header endRefreshing];
+//    aaa=1;
+//      [dataArr removeAllObjects];
+//      [_tableView reloadData];
+//      [self jiexiData:@"1"];
+//  
+//}
+//-(void)footerRefresh
+//{
+//    [_tableView.footer endRefreshing];
+////    static int a = 1;
+////    a=a+1;
+//     aaa++;
+//    NSString * conde =[NSString stringWithFormat:@"%d",aaa];
+//     //[dataArr removeAllObjects];
+//    [self jiexiData:conde];
+//
+//}
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
    //NSLog(@"里面数组的歌是%d",dataArr.count);
@@ -339,6 +340,7 @@ static CGFloat textFieldH = 40;
     YYQTableViewCell * cell =[tableView dequeueReusableCellWithIdentifier:kTimeLineTableViewCellId];
      YanYiQuanModel * mm = dataArr[indexPath.row];
    // NSLog(@">>>mm.name=%@",mm.msgContent);
+//    [self setup1:mm];
     __weak typeof(self) weakSelf = self;
     if (!cell.moreButtonClickedBlock) {
         [cell setMoreButtonClickedBlock:^(NSIndexPath *indexPath) {
@@ -362,8 +364,11 @@ static CGFloat textFieldH = 40;
 //
 //    
     cell.indexPath=indexPath;
+    
     cell.model=mm;
+    NSLog(@"有咱%lu",mm.zan.count);
 //    cell.model=dataArr[indexPath.row];
+    
     [cell.operationButton addTarget:self action:@selector(pinglun:) forControlEvents:UIControlEventTouchUpInside];
     cell.operationButton.tag=mm.renjiaID;
 
@@ -380,11 +385,12 @@ static CGFloat textFieldH = 40;
     
     return cell;
 }
+#pragma mark --头像姓名点击
 -(void)iconClink:(UIButton*)btn{
     
-    YanYuanKongJian * yanvc =[YanYuanKongJian new];
+    YanYuanXiangQingVC * yanvc =[YanYuanXiangQingVC new];
     YanYiQuanModel * mm = dataArr[btn.tag];
-    yanvc.phone1=mm.zhucehao;
+    yanvc.phoneNum=mm.zhucehao;
     [self.navigationController pushViewController:yanvc animated:YES];
   //  NSLog(@"输出注册号是%@",mm.zhucehao);
 }
@@ -400,7 +406,7 @@ static CGFloat textFieldH = 40;
 
 
 
-
+#pragma mark --点赞
 -(void)dianzan:(UIButton*)sender{
     UIAlertController * alerview =[UIAlertController alertControllerWithTitle:@"温馨提示" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction * action1 =[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -425,6 +431,8 @@ static CGFloat textFieldH = 40;
             UITableViewCell * cell = (UITableViewCell *)[[sender superview] superview];
             NSIndexPath *index = [_tableView indexPathForCell:cell];
             YanYiQuanModel * md = dataArr[index.row];
+            
+            
             NSMutableArray *temp = [NSMutableArray arrayWithArray:md.likeItemsArray];
             NSString * idd =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"username"]];
             
@@ -449,7 +457,11 @@ static CGFloat textFieldH = 40;
             md.likeItemsArray = [temp copy];
             
             [ShuJuModel shangchuanzanLikedyid:[NSString stringWithFormat:@"%lu",sender.tag] success:^(NSDictionary *dic) {
-                
+//                NSDictionary * contentDic =[dic objectForKey:@"content"];
+//                for (NSDictionary * dicc in contentDic) {
+//                    
+//                }
+//                md.likeItemsArray=[contentDic objectForKey:@"praiseList"];
             } error:nil];
             [_tableView reloadRowsAtIndexPaths:@[index] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -463,7 +475,7 @@ static CGFloat textFieldH = 40;
     
     
 }
-
+#pragma mark --评论
 -(void)pinglun:(UIButton*)sender
 {
    // NSLog(@"点击评论了");
@@ -652,23 +664,35 @@ static CGFloat textFieldH = 40;
         [self presentViewController:alerview animated:YES completion:nil];
     }
     else{
-    NSString * huiyuan =[[NSUserDefaults standardUserDefaults]objectForKey:@"huiyuanma"];
-    if ([huiyuan isEqualToString:@"0"] || huiyuan==nil) {
-       
-             alerview.message=@"您还不是演员,请先升级为演员";
-       
-        UIAlertAction * action2 =[UIAlertAction actionWithTitle:@"升级演员" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            ZhiFuViewController * vc =[ZhiFuViewController new];
+        
+        if ([[NSUSE_DEFO objectForKey:@"username"] isEqualToString:@"15032735032"]) {
+            //演员
+            PublishVC * vc =[PublishVC new];
+            vc.hidesBottomBarWhenPushed=YES;
             [self.navigationController pushViewController:vc animated:YES];
-        }];
-        [alerview addAction:action1];
-        [alerview addAction:action2];
-        [self presentViewController:alerview animated:YES completion:nil];
-    }else{
-        PublishVC * vc =[PublishVC new];
-        vc.hidesBottomBarWhenPushed=YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+        }else{
+            NSString * huiyuan =[[NSUserDefaults standardUserDefaults]objectForKey:@"VIP"];
+            
+            if ([huiyuan isEqualToString:@"2"]) {
+                //演员
+                PublishVC * vc =[PublishVC new];
+                vc.hidesBottomBarWhenPushed=YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else{
+                alerview.message=@"您还不是演员,请先升级为演员";
+                
+                UIAlertAction * action2 =[UIAlertAction actionWithTitle:@"升级演员" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                }];
+                [alerview addAction:action1];
+                [alerview addAction:action2];
+                [self presentViewController:alerview animated:YES completion:nil];
+            }
+            
+        }
+        
+        
+
+    
     }
 }
 - (void)didReceiveMemoryWarning {
