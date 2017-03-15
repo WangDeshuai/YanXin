@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view.
     [self daohangTiao];
     
-    _dataArray=[[NSMutableArray alloc]initWithObjects:@"女",@"男", nil];
+    _dataArray=[[NSMutableArray alloc]initWithObjects:@"男",@"女", nil];
     [self CreatTabelView];
 }
 
@@ -63,7 +63,13 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
-    self.XingBieBlock(_dataArray[indexPath.row],[NSString stringWithFormat:@"%lu",indexPath.row]);
+    //0女 1男
+    if (indexPath.row==0) {
+        self.XingBieBlock(_dataArray[indexPath.row],@"1");
+    }else{
+         self.XingBieBlock(_dataArray[indexPath.row],@"0");
+    }
+   
     [self.navigationController popViewControllerAnimated:YES];
 }
 /*

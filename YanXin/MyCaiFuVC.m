@@ -112,7 +112,7 @@
 -(void)daohangTiao{
     self.navigationController.navigationBar.barTintColor=DAO_COLOR;
     self.view.backgroundColor=COLOR;
-    self.title=@"我的财富";
+    self.title=@"我的积分";
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont systemFontOfSize:biaoti]}];
     //返回按钮
     UIButton*backBtn=[UIButton buttonWithType:UIButtonTypeCustom];

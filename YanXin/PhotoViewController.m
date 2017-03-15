@@ -25,6 +25,14 @@ static NSString *headerViewIdentifier = @"hederview";
 
 @implementation PhotoViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"输出看看%@>>>%@",_phoneNum,[NSUSE_DEFO objectForKey:@"username"]);
+    if (_phoneNum==[NSUSE_DEFO objectForKey:@"username"]) {
+        [self CreatUpDownBtn];
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -32,9 +40,7 @@ static NSString *headerViewIdentifier = @"hederview";
     _dataArray=[NSMutableArray new];
     _iddArr=[NSMutableArray new];
     [self CreatCollectionView];
-    if (_phoneNum==[NSUSE_DEFO objectForKey:@"username"]) {
-        [self CreatUpDownBtn];
-    }
+    
     
     
 
@@ -258,17 +264,17 @@ static NSString *headerViewIdentifier = @"hederview";
     cell.backgroundColor=[UIColor magentaColor];
     cell.imageView.image=_dataArray[indexPath.row];
     cell.TapBlock=^(UILongPressGestureRecognizer * tapp){
-      
-        if (tapp.state==UIGestureRecognizerStateBegan) {
-            //删除的时候不不需要区分视频、图片，只要id
+        if (_phoneNum==[NSUSE_DEFO objectForKey:@"username"]) {
+            if (tapp.state==UIGestureRecognizerStateBegan) {
+                //删除的时候不不需要区分视频、图片，只要id
                 NSLog(@"长按了%@",_iddArr[indexPath.row]);
-                UIAlertController * actionView =[UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否删除图片" preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertController * actionView =[UIAlertController alertControllerWithTitle:@"温馨提示" message:@"是否确认删除" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction * action1 =[UIAlertAction actionWithTitle:@"是" style:0 handler:^(UIAlertAction * _Nonnull action) {
-                   [LCProgressHUD showLoading:@"请稍后..."];
-                   
+                    [LCProgressHUD showLoading:@"请稍后..."];
+                    
                     [Engine deleteImageOrVivoID:_iddArr[indexPath.row] success:^(NSDictionary *dic) {
                         [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
-                         NSLog(@"输出删除%@",_dataArray[indexPath.row]);
+                        NSLog(@"输出删除%@",_dataArray[indexPath.row]);
                         [_dataArray removeObject:_dataArray[indexPath.row]];
                         [_collectionView reloadData];
                     } error:^(NSError *error) {
@@ -279,8 +285,11 @@ static NSString *headerViewIdentifier = @"hederview";
                 [actionView addAction:action2];
                 [actionView addAction:action1];
                 [self presentViewController:actionView animated:YES completion:nil];
-
+                
+            }
+            
         }
+      
         
         
     };

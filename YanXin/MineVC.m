@@ -55,8 +55,16 @@
         NSArray * arr33 =@[@"my_set",@"my_help"];
         _imageArr=@[arr11,arr22,arr33];
     }else{
+        NSString * huiyuan =[[NSUserDefaults standardUserDefaults]objectForKey:@"VIP"];
+        NSString * str =nil;
+        if ([huiyuan isEqualToString:@"1"]) {
+            str=@"升级会员";
+        }else{
+            str=@"会员升级";
+        }
+
         NSArray * arr1 =@[@"我的主页"];
-        NSArray * arr2 =@[@"会员升级",@"邀请分享"];
+        NSArray * arr2 =@[str,@"邀请分享"];
         NSArray * arr3 =@[@"设置",@"帮助"];
         _titleArr=@[arr1,arr2,arr3];
         
@@ -246,8 +254,15 @@
         headView.sd_layout.heightIs(207+7);
         view2.hidden=NO;
         nameLabel.text=md.name;
-        renZhengImage.image=[UIImage imageNamed:@"my_shiming"];
         vipImage.image=md.vipImage;
+        if (md.isShiMing==YES) {
+            renZhengImage.image=[UIImage imageNamed:@"my_shiming"];
+        }else{
+            renZhengImage.image=md.vipImage;
+            vipImage.hidden=YES;
+        }
+       
+        
         numberHao.text=[NSString stringWithFormat:@"演信号:%@",md.yanXinnum];
         timeLabel.text=[NSString stringWithFormat:@"加入时间:%@",md.time];
     }
@@ -411,7 +426,7 @@
                     vc.hidesBottomBarWhenPushed=YES;
                     [self.navigationController pushViewController:vc animated:YES];
                 }else{
-                    [LCProgressHUD showMessage:@"请先升级为演员"];
+                    [LCProgressHUD showMessage:@"此页面升级会员才可查看"];
                 }
 
             }

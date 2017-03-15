@@ -104,6 +104,7 @@
                 NSDictionary * contentDic =[dic objectForKey:@"content"];
                 MineModel * md =[[MineModel alloc]initWithMessageDic:[contentDic objectForKey:@"userInfo"]];
                 _xmName=md.name;
+                NSLog(@"MYMessageVC>>>>>>%@",md.name);
                 //存上姓名，在演艺圈点赞评论的时候用，有它来判断是否有个人资料
                 [NSUSE_DEFO setObject:md.name forKey:@"benrenname"];
                 [NSUSE_DEFO synchronize];
@@ -408,6 +409,9 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section==1) {
+        return 0;
+    }
     return 50;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

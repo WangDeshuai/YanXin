@@ -145,7 +145,7 @@
             [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
             if ([code isEqualToString:@"1"]) {
                 NSLog(@"上传成功");
-              //  [WINDOW showHUDWithText:@"成功预定" Type:ShowPhotoYes Enabled:YES];
+              
             [self.navigationController popViewControllerAnimated:YES];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"xianyu"];
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"shiyu"];

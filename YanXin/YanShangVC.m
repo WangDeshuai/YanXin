@@ -102,7 +102,7 @@
     souBtn.frame=CGRectMake(KUAN-36, 33,20, 20);
     [souBtn setBackgroundImage:[UIImage imageNamed:@"fangdajing"] forState:UIControlStateNormal];
     [souBtn addTarget:self action:@selector(sousuo) forControlEvents:UIControlEventTouchUpInside];
-    //[view1 addSubview:souBtn];
+    [view1 addSubview:souBtn];
 
 
 
@@ -181,8 +181,9 @@
 //右按钮
 -(void)sousuo
 {
-//    YanShangSouSuoVC * yanVC=[[YanShangSouSuoVC alloc]init];
-//    [self.navigationController pushViewController:yanVC animated:YES];
+    YanShangSouSuoVC * yanVC=[[YanShangSouSuoVC alloc]init];
+    yanVC.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:yanVC animated:YES];
 }
 
 

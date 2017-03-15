@@ -16,6 +16,7 @@
 #import "JPUSHService.h"
 #import "CommentsViewController.h"
 #import "YanYuanXiangQingVC.h"
+#import "FaBuDongTaiVC.h"
 #define kTimeLineTableViewCellId @"SDTimeLineCell"
 static CGFloat textFieldH = 40;
 
@@ -422,12 +423,12 @@ static CGFloat textFieldH = 40;
         [self presentViewController:alerview animated:YES completion:nil];
     }else{
         
-        if (![[NSUserDefaults standardUserDefaults]objectForKey:@"benrenname"]) {
-            NSLog(@"请完善个人资料");
-            alerview.message=@"请完善您的个人资料";
-            [alerview addAction:action1];
-            [self presentViewController:alerview animated:YES completion:nil];
-        }else{
+//        if (![[NSUserDefaults standardUserDefaults]objectForKey:@"benrenname"]) {
+//            NSLog(@"请完善个人资料");
+//            alerview.message=@"请完善您的个人资料";
+//            [alerview addAction:action1];
+//            [self presentViewController:alerview animated:YES completion:nil];
+//        }else{
             UITableViewCell * cell = (UITableViewCell *)[[sender superview] superview];
             NSIndexPath *index = [_tableView indexPathForCell:cell];
             YanYiQuanModel * md = dataArr[index.row];
@@ -435,10 +436,16 @@ static CGFloat textFieldH = 40;
             
             NSMutableArray *temp = [NSMutableArray arrayWithArray:md.likeItemsArray];
             NSString * idd =[NSString stringWithFormat:@"%@",[[NSUserDefaults standardUserDefaults]objectForKey:@"username"]];
-            
+        NSString * strr =[NSUSE_DEFO objectForKey:@"benrenname"];
+        NSLog(@"我曹你吗%@",strr);
             if (!md.isLiked) {
                 SDTimeLineCellLikeItemModel *likeModel = [SDTimeLineCellLikeItemModel new];
-                likeModel.userName = [[NSUserDefaults standardUserDefaults]objectForKey:@"benrenname"];
+                if (strr==nil) {
+                     likeModel.userName = @"";
+                }else{
+                     likeModel.userName = strr;
+                }
+               
                 likeModel.userId =idd;
                 [temp addObject:likeModel];
                 
@@ -467,7 +474,7 @@ static CGFloat textFieldH = 40;
         }
 
             
-        }
+       // }
         
         
     
@@ -666,8 +673,8 @@ static CGFloat textFieldH = 40;
     else{
         
         if ([[NSUSE_DEFO objectForKey:@"username"] isEqualToString:@"15032735032"]) {
-            //演员
-            PublishVC * vc =[PublishVC new];
+            //演员PublishVC
+            FaBuDongTaiVC * vc =[FaBuDongTaiVC new];
             vc.hidesBottomBarWhenPushed=YES;
             [self.navigationController pushViewController:vc animated:YES];
         }else{
@@ -675,7 +682,7 @@ static CGFloat textFieldH = 40;
             
             if ([huiyuan isEqualToString:@"2"]) {
                 //演员
-                PublishVC * vc =[PublishVC new];
+                FaBuDongTaiVC * vc =[FaBuDongTaiVC new];
                 vc.hidesBottomBarWhenPushed=YES;
                 [self.navigationController pushViewController:vc animated:YES];
             }else{

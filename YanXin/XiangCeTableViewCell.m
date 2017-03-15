@@ -83,6 +83,7 @@ static NSString *headerViewIdentifier = @"hederview";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+    //[_dataArr[section] count]
     
     return [_dataArr[section] count];
     
@@ -97,8 +98,9 @@ static NSString *headerViewIdentifier = @"hederview";
         NSMutableArray * imageArr=_dataArr[0];
         NSString * urlimage =imageArr[indexPath.row];
         NSLog(@"urlStr=%@",urlimage);
-        if ([urlimage isEqualToString:@""]) {
-            
+        if ([urlimage isEqualToString:@"http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg"]) {
+          //  [LCProgressHUD showMessage:@"第一个进来了"];
+            cell.imageView.image=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"加号" ofType:@"jpg"]];
         }else{
             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlimage] placeholderImage:[UIImage imageNamed:@""]]; 
         }
@@ -106,10 +108,17 @@ static NSString *headerViewIdentifier = @"hederview";
         
         
     }else{
-       
+        
         NSMutableArray * imageArr=_dataArr[1];
         NSString * urlimage =imageArr[indexPath.row];
-        [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlimage] placeholderImage:[UIImage imageNamed:@"video_bg"]];
+        if ([urlimage isEqualToString:@"http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg"]) {
+           // [LCProgressHUD showMessage:@"第一个进来了"];
+            cell.imageView.image=[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"加号" ofType:@"jpg"]];
+        }else{
+              [cell.imageView sd_setImageWithURL:[NSURL URLWithString:urlimage] placeholderImage:[UIImage imageNamed:@"video_bg"]];
+        }
+        
+      
     }
     
     return cell;

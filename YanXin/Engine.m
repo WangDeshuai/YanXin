@@ -160,7 +160,7 @@
 }
 
 #pragma mark --6查询演员
-+(void)chaXunYanYuanContentCategory:(NSString*)num Page:(NSString*)page  success:(SuccessBlock)aSuccess error:(ErrorBlock)aError{
++(void)chaXunYanYuanContentCategory:(NSString*)num Page:(NSString*)page  pagesize:(NSString*)size success:(SuccessBlock)aSuccess error:(ErrorBlock)aError{
   
     NSString * a =[[NSUserDefaults standardUserDefaults]objectForKey:@"shengz"];
     NSString * b =[[NSUserDefaults standardUserDefaults]objectForKey:@"shiz"];
@@ -180,7 +180,7 @@
     [dicc setObject:a forKey:@"provname"];
     [dicc setObject:b forKey:@"cityname"];
     [dicc setObject:c forKey:@"districtname"];
-    [dicc setObject:@"10" forKey:@"pageSize"];
+    [dicc setObject:size forKey:@"pageSize"];
     [dicc setObject:num forKey:@"category"];
     [dicc setObject:page forKey:@"pageIndex"];
     AFHTTPRequestOperationManager * manager =[AFHTTPRequestOperationManager manager];
@@ -380,13 +380,13 @@
     
 }
 #pragma mark --12查询演商//(0.全部演商  3.演出公司 4.演出设备公司 5.演出场地公司
-+(void)ChaXunYanShangPage:(NSString*)page Type:(NSString*)type success:(SuccessBlock)aSuccess error:(ErrorBlock)aError{
++(void)ChaXunYanShangPage:(NSString*)page Type:(NSString*)type PageSize:(NSString*)size success:(SuccessBlock)aSuccess error:(ErrorBlock)aError{
     
     NSString * urlStr =[NSString stringWithFormat:@"%@company/app_qryCompany.action",SER_VICE];
     NSMutableDictionary * dic =[NSMutableDictionary new];
     [dic setObject:type forKey:@"type"];
     [dic setObject:page forKey:@"pageIndex"];
-    [dic setObject:@"10" forKey:@"pageSize"];
+    [dic setObject:size forKey:@"pageSize"];
     NSString * a =[[NSUserDefaults standardUserDefaults]objectForKey:@"shengz"];
     NSString * b =[[NSUserDefaults standardUserDefaults]objectForKey:@"shiz"];
     NSString * c =[[NSUserDefaults standardUserDefaults]objectForKey:@"xianz"];

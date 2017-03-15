@@ -44,7 +44,13 @@
         //精力
         _experience=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"experience"]]];
         //演信号
-        _yanXinnum=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"promote_code"]]];
+     
+           NSString * yanNum=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"promote_code"]]];
+        if ([yanNum isEqualToString:@""]) {
+            _yanXinnum=@"暂无演信号";
+        }else{
+            _yanXinnum=yanNum;
+        }
         //加入时间
         _time=[ToolClass isString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"registtime"]]];
         //标签

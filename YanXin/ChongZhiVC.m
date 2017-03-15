@@ -39,8 +39,9 @@
     [self daohangTiao];//创建导航条
     
     self.view.backgroundColor=COLOR;
-    _imageArray=@[@"chonghzi_zfb",@"chonghzi_wx"];
-    _dataArray=@[@"支付宝支付",@"微信支付"];
+    _imageArray=@[@"chonghzi_wx",@"chonghzi_zfb"];//chonghzi_zfb
+    _dataArray=@[@"微信支付",@"支付宝支付(推荐)"];//支付宝支付
+
     _btnArray=@[@"chonghzi_yuan",@"chonghzi_yuan"];
     _seleArray=@[@"chonghzi_yuan_xuan",@"chonghzi_yuan_xuan"];
     _vipArray=[NSMutableArray new];
@@ -176,7 +177,7 @@
                 [button setTitleColor:JXColor(51, 51, 51, 1) forState:0];
                 button.titleEdgeInsets=UIEdgeInsetsMake(25, 10, 50, 10);
                 [button setTitle:md.vipPrice forState:0];
-                if (i==0) {
+                if (i==2) {
                     button.selected=YES;
                     _lastBtn=button;
                 }
@@ -436,7 +437,7 @@
     VIPModel * md =_vipArray[_indexpath];
     NSLog(@"输出%@",md.vipPrice);
     NSString * yanXinNumber =_yanXinText.text;
-    if (_indexRow==0) {
+    if (_indexRow==1) {
         //支付宝支付(这个网络请求主要是为了获取订单号)
         [Engine getDingDanNumberAccount:[NSUSE_DEFO objectForKey:@"username"] VipID:md.vipID YanXinNum:yanXinNumber Subject:[NSString stringWithFormat:@"充值vip%@",md.vipDengJi] success:^(NSDictionary *dic) {
             NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];

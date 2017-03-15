@@ -37,8 +37,8 @@
     // Do any additional setup after loading the view.
     [self daohangTiao];
     self.view.backgroundColor=COLOR;
-    _imageArray=@[@"chonghzi_zfb",@"chonghzi_wx"];
-    _dataArray=@[@"支付宝支付",@"微信支付"];
+    _imageArray=@[@"chonghzi_wx",@"chonghzi_zfb"];//chonghzi_zfb
+    _dataArray=@[@"微信支付",@"支付宝支付(推荐)"];//支付宝支付
     _btnArray=@[@"chonghzi_yuan",@"chonghzi_yuan"];
     _seleArray=@[@"chonghzi_yuan_xuan",@"chonghzi_yuan_xuan"];
     _vipArray=[NSMutableArray new];
@@ -223,7 +223,7 @@
                 button.sd_cornerRadius=@(10);
                 button.layer.borderColor=[UIColor blackColor].CGColor;
                 button.alpha=.6;
-                if (i==0) {
+                if (i==2) {
                     button.layer.borderWidth=1;
                     button.layer.borderColor=JXColor(49, 194,124, 1).CGColor;
                     button.textColor=JXColor(49, 194,124, 1);
@@ -421,7 +421,7 @@
 //    ShengJiVIPZhiFuBaoDiJiVIPId
     
      VIPModel * md =_vipArray[_indexpath];
-    if (_indexRow==0) {
+    if (_indexRow==1) {
         //支付宝支付
         [Engine ShengJiVIPZhiFuBaoDiJiVIPId:md.shengJiDID GaoJiID:md.shengJiGaoID Price:md.shengJiPrice Subject:md.shengJiMaoShu success:^(NSDictionary *dic) {
             NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];

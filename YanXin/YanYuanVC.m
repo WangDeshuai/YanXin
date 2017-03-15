@@ -187,7 +187,7 @@
 #pragma mark --获取演员内容
 -(void)getYanYuanContentDataPage:(NSString*)page LeiMu:(NSString*)leimu{
     
-    [Engine chaXunYanYuanContentCategory:leimu Page:page success:^(NSDictionary *dic) {
+    [Engine chaXunYanYuanContentCategory:leimu Page:page pagesize:@"10" success:^(NSDictionary *dic) {
                 NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
                 if ([code isEqualToString:@"1"]) {
                     NSArray * contentArr =[dic objectForKey:@"content"];

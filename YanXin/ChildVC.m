@@ -34,7 +34,7 @@
 #pragma mark --网络请求数据源
 -(void)InteNextDataPage:(NSString*)page{
     //3演出公司，4演出设备，5演出场地
-    [Engine ChaXunYanShangPage:page Type:@"3" success:^(NSDictionary *dic) {
+    [Engine ChaXunYanShangPage:page Type:@"3" PageSize:@"10" success:^(NSDictionary *dic) {
         NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
         if ([code isEqualToString:@"1"]) {
             NSArray * contentArr =[dic objectForKey:@"content"];

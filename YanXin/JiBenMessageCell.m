@@ -37,11 +37,11 @@
 -(void)startCell{
     _titleLabel=[UILabel new];
     _nameLabel=[UILabel new];
-    _textview=[UITextView new];
+    _textview=[UILabel new];
     _textview.font=[UIFont systemFontOfSize:15];
     _textview.alpha=.6;
     _textview.hidden=YES;
-    _textview.editable=NO;
+    //_textview.editable=NO;
     
     _swit=[[UISwitch alloc]init];
   
@@ -73,11 +73,12 @@
    // [_nameLabel setSingleLineAutoResizeWithMaxWidth:ScreenWidth];
    
     //个人简介和基本资料用
+    _textview.numberOfLines=0;
     _textview.sd_layout
     .leftSpaceToView(self.contentView,15)
-    .topSpaceToView(self.contentView,0)
+    .topSpaceToView(self.contentView,10)
     .rightSpaceToView(self.contentView,15)
-    .bottomSpaceToView(self.contentView,0);
+    .autoHeightRatio(0);
    
     _swit.hidden=YES;
     _swit.sd_layout

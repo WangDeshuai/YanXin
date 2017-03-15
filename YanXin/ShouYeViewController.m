@@ -20,6 +20,7 @@
 #import "YuDingChangDiViewController.h"
 #import "LrdOutputView.h"
 #import "ProvNameCityVC.h"
+#import "YuDingYanChuVC.h"
 @interface ShouYeViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,LrdOutputViewDelegate,SDCycleScrollViewDelegate>
 {
     //城市Label
@@ -278,10 +279,10 @@
                 [LCProgressHUD showMessage:@"正在开发中..."];
                 return;
             }
-                ButtonSeclt * vc =[[ButtonSeclt alloc]init];
-                vc.hidesBottomBarWhenPushed=YES;
-                vc.number=button.tag;
-                [self.navigationController pushViewController:vc animated:YES];
+            YuDingYanChuVC * vc =[[YuDingYanChuVC alloc]init];
+            vc.number=button.tag;
+            vc.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:vc animated:YES];
         }
 
 }

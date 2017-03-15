@@ -163,7 +163,7 @@
                 }];
             UIAlertAction *action2=[UIAlertAction actionWithTitle:@"相册" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 SGImagePickerController *picker = [[SGImagePickerController alloc] init];
-                picker.maxCount = 5;
+                picker.maxCount = 9-self.itemsSectionPictureArray.count;
                 //返回的图片
                 [picker setDidFinishSelectThumbnails:^(NSArray *thumbnails) {
                      NSLog(@"缩略图%@",thumbnails);
@@ -349,15 +349,18 @@
         NSLog(@"没东西");
         self.neirongTF.text=@"";
     }
-//    if (self.neirongTF.text.length==0 || self.neirongTF.text==nil || [self.neirongTF.text isEqualToString:@""]) {
-//        [LCProgressHUD showMessage:@"请填写内容"];
-//    }else{
+
+    if (self.itemsSectionPictureArray .count>9) {
+        [LCProgressHUD showMessage:@"最多上传9张图片"];
+        return;
+    }
+    [LCProgressHUD showLoading:@"请稍后..."];
         [ShuJuModel publishNeirong:self.neirongTF.text Image:self.itemsSectionPictureArray success:^(NSDictionary *dic) {
-            
+            [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
             NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
             if ([code isEqualToString:@"1"]) {
-                // [WINDOW showHUDWithText:@"发布成功" Type:ShowPhotoYes Enabled:YES];
-                [LCProgressHUD showMessage:@"发布成功"];
+                
+                
                 [self.navigationController popViewControllerAnimated:YES];
             }
             
@@ -365,7 +368,7 @@
             
         }];
  
-    //}
+    
     
  
 }

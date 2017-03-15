@@ -34,7 +34,7 @@ typedef void (^ErrorBlock)(NSError * error);
 
 
 #pragma mark --6查询演员
-+(void)chaXunYanYuanContentCategory:(NSString*)num Page:(NSString*)page  success:(SuccessBlock)aSuccess error:(ErrorBlock)aError;
++(void)chaXunYanYuanContentCategory:(NSString*)num Page:(NSString*)page pagesize:(NSString*)size  success:(SuccessBlock)aSuccess  error:(ErrorBlock)aError;
 
 #pragma mark --7app升级演员界面，创建演员资料
 +(void)appShengJiYanYuanFenLeiNum:(NSString*)num JianJie:(NSString*)jianjie JingLi:(NSString*)jingli Images:(NSString*)imageArr ShiPin:(NSString*)shipin success:(SuccessBlock)aSuccess error:(ErrorBlock)aError;
@@ -53,7 +53,7 @@ typedef void (^ErrorBlock)(NSError * error);
 +(void)ChaKanJiBenZiLiaoAccount:(NSString*)account success:(SuccessBlock)aSuccess error:(ErrorBlock)aError;
 
 #pragma mark --12查询演商//(0.全部演商  3.演出公司 4.演出设备公司 5.演出场地公司
-+(void)ChaXunYanShangPage:(NSString*)page Type:(NSString*)type success:(SuccessBlock)aSuccess error:(ErrorBlock)aError;
++(void)ChaXunYanShangPage:(NSString*)page Type:(NSString*)type PageSize:(NSString*)size success:(SuccessBlock)aSuccess error:(ErrorBlock)aError;
 
 #pragma mark --13查看演商详细资料
 +(void)chaKanXiangQingMessageAccount:(NSString*)account success:(SuccessBlock)aSuccess error:(ErrorBlock)aError;

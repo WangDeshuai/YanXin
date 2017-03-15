@@ -101,7 +101,7 @@
             //UIImage *image = [UIImage imageNamed:_picPathStringsArray.firstObject];
             UIImage *image = [UIImage imageNamed:@"1.jpg"];
             if (image.size.width) {
-                itemH = 90;//image.size.height / image.size.width * itemW;
+                itemH = 80;//image.size.height / image.size.width * itemW;
             }
         }
         else {
@@ -167,10 +167,10 @@
 
 - (NSInteger)perRowItemCountForPicPathArray:(NSArray *)array
 {
-    if (array.count < 3) {
+    if (array.count <= 3) {
         return array.count;
     } else if (array.count <= 4) {
-        return 2;
+        return 3;
     } else {
         return 3;
     }

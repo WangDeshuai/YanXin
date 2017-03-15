@@ -11,6 +11,6 @@
 +(instancetype)cellWithTableView:(UITableView*)tableView CellID:(NSString*)cellID;
 @property(nonatomic,strong)UILabel * titleLabel;
 @property(nonatomic,strong)UILabel * nameLabel;
-@property(nonatomic,strong)UITextView * textview;
+@property(nonatomic,strong)UILabel * textview;
 @property(nonatomic,strong)UISwitch * swit;
 @end

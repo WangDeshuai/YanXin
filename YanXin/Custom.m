@@ -33,8 +33,9 @@
         .widthIs(100)
         .heightIs(100);
         
+//        _nameLab.backgroundColor=[UIColor yellowColor];
         _nameLab.sd_layout
-        .topEqualToView(_lineImage)
+        .topSpaceToView(self.contentView,15)
         .leftSpaceToView(_lineImage,10)
         .heightIs(30);
       [_nameLab setSingleLineAutoResizeWithMaxWidth:250];
@@ -50,11 +51,12 @@
         .widthIs(40)
         .heightIs(14);
         
+//        _jianJieLab.backgroundColor=[UIColor redColor];
         _jianJieLab.sd_layout
         .topSpaceToView(_renZhengImage,5)
         .leftEqualToView(_nameLab)
         .rightSpaceToView(self.contentView,30)
-        .heightIs(40);
+        .bottomEqualToView(_lineImage);
         [self setupAutoHeightWithBottomView:_jianJieLab bottomMargin:10];
         // Initialization code
     }
@@ -75,15 +77,7 @@
     }
     _nameLab.sd_layout.widthIs(fl);
     
-//    if ([model.renZheng isEqualToString:@"0"]) {
-//        //没有认证
-//        _renZhengImage.hidden=YES;
-//        _VIPImage.sd_layout
-//        .leftEqualToView(_nameLab)
-//        .topSpaceToView(_nameLab,5);
-//    }else{
-//        _renZhengImage.hidden=NO;
-//    }
+
     _VIPImage.image=model.vipImage;
     
     

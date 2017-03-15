@@ -42,6 +42,7 @@
                 ZhiYeClassModel * md =[[ZhiYeClassModel alloc]initWithZhiYeClassDic:dicc];
                 [_dataArray1 addObject:md];
             }
+            [_dataArray1 removeObjectAtIndex:0];
             [_leftTableView reloadData];
         }else
         {
@@ -127,6 +128,11 @@
     }else if (tableView==_rightTableView){
         ZhiYeClassModel * md =_dataArray2[indexPath.row];
         nameLabel.text=md.zhiYeName;
+        if (indexPath.row==0) {
+            nameLabel.text=[NSString stringWithFormat:@"全部%@",md.zhiYeName];
+            nameLabel.textColor=[UIColor blackColor];
+            nameLabel.alpha=1;
+        }
     }
 
     return cell;
@@ -136,13 +142,17 @@
 {
     if (tableView==_leftTableView) {
         [_dataArray2 removeAllObjects];
-        if (indexPath.row==0) {
-            [LCProgressHUD showMessage:@"明星不能自己选择"];
-        }else{
-              [self CreatRightTabelView];
-            ZhiYeClassModel * md =_dataArray1[indexPath.row];
-            [self chaXunerJiClassNum:md];
-        }
+        [self CreatRightTabelView];
+        ZhiYeClassModel * md =_dataArray1[indexPath.row];
+        [self chaXunerJiClassNum:md];
+
+//        if (indexPath.row==0) {
+//            [LCProgressHUD showMessage:@"明星不能自己选择"];
+//        }else{
+//              [self CreatRightTabelView];
+//            ZhiYeClassModel * md =_dataArray1[indexPath.row];
+//            [self chaXunerJiClassNum:md];
+//        }
        
     }else{
          ZhiYeClassModel * md =_dataArray2[indexPath.row];

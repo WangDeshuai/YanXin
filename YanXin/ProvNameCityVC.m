@@ -51,7 +51,8 @@
 }
 #pragma mark --获取城市
 -(void)CreatshuJuData:(NSString*)shengName{
-      [_dataArray2 addObject:shengName];
+     // [_dataArray2 addObject:shengName];
+      [_dataArray2 addObject:@"全部"];
     [ShuJuModel getcityAll:shengName success:^(NSDictionary *dic) {
         NSMutableArray * content =[dic objectForKey:@"content"];
         
@@ -70,6 +71,7 @@
 #pragma mark --获取县
 -(void)CreatDataXian:(NSString*)cityName{
     [_dataArray3 addObject:cityName];
+//    [_dataArray3 addObject:@"全部"];
     [ShuJuModel getXianAll:cityName success:^(NSDictionary *dic) {
         NSMutableArray * content =[dic objectForKey:@"content"];
         
@@ -157,9 +159,19 @@
     if (tableView==_tableView) {
         nameLabel.text=_dataArray1[indexPath.row];
     }else if (tableView==_centerTableView){
-        nameLabel.text=_dataArray2[indexPath.row];
+//        if (indexPath.row==0) {
+//            nameLabel.text=@"全部";
+//        }else{
+             nameLabel.text=_dataArray2[indexPath.row];
+        //}
+       
     }else{
-        nameLabel.text=_dataArray3[indexPath.row];
+//        if (indexPath.row==0) {
+//            nameLabel.text=@"全部";
+//        }else{
+            nameLabel.text=_dataArray3[indexPath.row];
+       // }
+//        nameLabel.text=_dataArray3[indexPath.row];
     }
     
     
@@ -221,9 +233,14 @@
         if (![_shiName isEqualToString:xianName]) {
             [NSUSE_DEFO setObject:_dataArray3[indexPath.row] forKey:@"xianz"];
         }
-       
+
+
+        NSLog(@"输出城市%@",_shiName);
         [NSUSE_DEFO synchronize];
+       
         self.Block(_shengName,_shiName,_dataArray3[indexPath.row]);
+        
+       
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

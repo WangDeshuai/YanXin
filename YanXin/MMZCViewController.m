@@ -330,6 +330,16 @@
         if ([code isEqualToString:@"1"]) {
             NSDictionary * contentDic =[dic objectForKey:@"content"];
             NSDictionary * userInfoDic =[contentDic objectForKey:@"userInfo"];
+           
+            //取出手机号用来判断是否登录
+            [NSUSE_DEFO setObject:[ToolClass isString:[userInfoDic objectForKey:@"account"]] forKey:@"username"];
+            [NSUSE_DEFO setObject:[ToolClass isString:[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"usertype"]]] forKey:@"VIP"];
+            [NSUSE_DEFO setObject:[ToolClass isString:[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"name"]]] forKey:@"benrenname"];
+           
+            [NSUSE_DEFO synchronize];
+
+            
+            
             //取出个人简介,看看有没有个人简介
             NSString * str =[ToolClass isString:[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"introduction"]]];
             if ([str isEqualToString:@""] || str==nil) {
@@ -341,13 +351,11 @@
             }
             
             
+            
+            
             //取出regist_id，推送用
             NSString * registId=[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"regist_id"]];
             [self JpushAlias:registId];
-            //取出手机号用来判断是否登录
-            [NSUSE_DEFO setObject:[ToolClass isString:[userInfoDic objectForKey:@"account"]] forKey:@"username"];
-            [NSUSE_DEFO setObject:[ToolClass isString:[NSString stringWithFormat:@"%@",[userInfoDic objectForKey:@"usertype"]]] forKey:@"VIP"];
-            [NSUSE_DEFO synchronize];
             [self dismissViewControllerAnimated:YES completion:nil];
         }else
         {

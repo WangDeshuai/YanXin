@@ -118,6 +118,8 @@
     if (indexPath.section==0) {
         if (indexPath.row==0) {
             //修改密码
+            cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
+
         }else{
         //缓存
             dextLabel.text=[NSString stringWithFormat:@"清除缓存(%.2fM)",[NSString getFileSizeWithPath:[NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Library/Caches"]]]];

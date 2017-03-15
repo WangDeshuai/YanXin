@@ -23,8 +23,8 @@
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor=[UIColor whiteColor];
      [self daohangTiao];
-    _nameArray=@[@"演出时间:",@"演出城市:",@"详细地址:",@"联  系  人:",@"联系方式:",@"详细要求:"];
-    _imageArray=@[@"ycgg_time",@"ycgg_place",@"ycgg_person",@"ycgg_phone",@"ycgg_lubiao",@"ycgg_xuqiu"];
+    _nameArray=@[@"演出时间:",@"演出城市:",@"详细地址:",@"联  系  人:",@"联系方式:",@"演出要求:"];
+    _imageArray=@[@"ycgg_time",@"ycgg_place",@"ycgg_lubiao",@"ycgg_person",@"ycgg_phone",@"ycgg_xuqiu"];
    
     _daraArray=@[_model.fabuTime,_model.didianLabel,_model.xiangXi,_model.nameLabel,_model.phoneLabel,_model.neirongLabel];
     

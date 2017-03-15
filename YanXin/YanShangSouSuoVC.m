@@ -54,7 +54,7 @@
     titleLable.textAlignment=1;
     titleLable.textColor=[UIColor whiteColor];
     [view addSubview:titleLable];
-    view.backgroundColor=[UIColor colorWithRed:37/255.0 green:180/255.0 blue:237/255.0 alpha:1];
+    view.backgroundColor=DAO_COLOR;
     [self.view addSubview:view];
     
     
@@ -74,7 +74,7 @@
     
     _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, KUAN, 44)];
     // 设置搜索范围的标题
-    _searchBar.scopeButtonTitles = @[@"按首字符搜索",@"按包含搜索"];
+   // _searchBar.scopeButtonTitles = @[@"按首字符搜索",@"按包含搜索"];
     _searchBar.placeholder = @"请输入您想要搜索的内容";
     // 用来显示搜索结果的
     
@@ -93,23 +93,29 @@
 
 -(void)jiexiShuju
 {
-    [ShuJuDataModel huoquSencondType:@"0" yeShu:@"0" success:^(NSDictionary *dic) {
+   
+    
+    [Engine ChaXunYanShangPage:@"0" Type:@"0" PageSize:@"0" success:^(NSDictionary *dic) {
         NSMutableArray * contenArr =[dic objectForKey:@"content"];
         for (NSDictionary * dicc in contenArr) {
             NSString * title = [dicc objectForKey:@"name"];
             NSString * type =[dicc objectForKey:@"usertype"];
             [_typeArray addObject:type];
             [_dataArray addObject:title];
-           
+            
             model=[[YanShangModel alloc]initWithDic:dicc];
             [_modelArray addObject:model];
-            
+           
         }
+         NSLog(@"数组%lu",_dataArray.count);
         [_tableView reloadData];
-        
+
     } error:^(NSError *error) {
         
     }];
+    
+    
+    
 }
 // 切换搜索范围时调用
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
@@ -128,27 +134,27 @@
     [_resultsArray removeAllObjects];
     // NSLog(@"%@",searchString);
     // 判断
-    if (_selectedScope == 0) {
-        // 按照首字符搜索
-        for (NSString * string in _dataArray) {
-            
-            // 按首字符搜索
-            // 判断字符串是否以XX开头的
-            // Prefix前缀
-            // 是以searchString为前缀的,返回YES,否则返回NO
-            BOOL isOK =  [string hasPrefix:searchString];
-            // 说明从数组中取出的string是以搜索的字符串searchString开头的
-            // 符合条件,加到结果数组中
-            if (isOK == YES) {
-                
-                [_resultsArray addObject:string];
-            }
-            
-            // NSLog(@"%@",_resultsArray);
-        }
-    }
+//    if (_selectedScope == 0) {
+//        // 按照首字符搜索
+//        for (NSString * string in _dataArray) {
+//            
+//            // 按首字符搜索
+//            // 判断字符串是否以XX开头的
+//            // Prefix前缀
+//            // 是以searchString为前缀的,返回YES,否则返回NO
+//            BOOL isOK =  [string hasPrefix:searchString];
+//            // 说明从数组中取出的string是以搜索的字符串searchString开头的
+//            // 符合条件,加到结果数组中
+//            if (isOK == YES) {
+//                
+//                [_resultsArray addObject:string];
+//            }
+//            
+//            // NSLog(@"%@",_resultsArray);
+//        }
+//    }
     // 按照包含搜索
-    if (_selectedScope == 1) {
+    //if (_selectedScope == 1) {
         // 从数据源中搜索
         for (NSString * string in _dataArray)
         {
@@ -162,7 +168,7 @@
                 [_resultsArray addObject:string];
             }
         }
-    }
+   // }
     
     return YES;
 }

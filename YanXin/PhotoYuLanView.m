@@ -49,6 +49,7 @@
      [_bgScrollview sd_addSubviews:@[_imageview]];
     if (_tagg==1) {
         //根据url获取图片尺寸
+        NSLog(@"数%@",_dataArray[index]);
         [_imageview sd_setImageWithURL:[NSURL URLWithString:_dataArray[index]] placeholderImage:[UIImage imageNamed:@"messege_bg"] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             _imageview.sd_layout
             .leftSpaceToView(_bgScrollview,ScreenWidth*index)

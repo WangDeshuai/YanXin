@@ -59,6 +59,7 @@
 {
 
      self.navigationController.navigationBarHidden=YES;
+     [self getXiangCeVivo];;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     
@@ -142,25 +143,48 @@
     [_imageArray removeAllObjects];
     [_vivtoArray removeAllObjects];
      [_myRefreshView  endRefreshing];
+    //Type  1相册  2视频
     [Engine ChaKanYanYuanPhotoVitioAccount:_phoneNum Type:@"1" Page:@"1" PageNum:@"6" success:^(NSDictionary *dic) {
         NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
         if ([code isEqualToString:@"1"]) {
             NSArray * contentArr =[dic objectForKey:@"content"];
-            
-            for (NSDictionary * dicc in contentArr) {
-                NSString * urlStr =[ToolClass isString:[NSString stringWithFormat:@"%@",[dicc objectForKey:@"url"]]];
-                [_imageArray addObject:urlStr];
+           
+            if (contentArr.count==0) {
+                
+               
+                if ([_phoneNum isEqualToString:[NSUSE_DEFO objectForKey:@"username"]]) {
+                     [_imageArray addObject:@"http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg"];
+                }else{
+                   // [LCProgressHUD showMessage:@"暂无图片"];
+                }
+               
+                
+            }else{
+                for (NSDictionary * dicc in contentArr) {
+                    NSString * urlStr =[ToolClass isString:[NSString stringWithFormat:@"%@",[dicc objectForKey:@"url"]]];
+                    [_imageArray addObject:urlStr];
+                }
             }
+            
             
             //获取视频
             [Engine ChaKanYanYuanPhotoVitioAccount:_phoneNum Type:@"2" Page:@"1" PageNum:@"6" success:^(NSDictionary *dic) {
                 NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
                 if ([code isEqualToString:@"1"]) {
                     NSArray * contentArr =[dic objectForKey:@"content"];
+                    if (contentArr.count==0) {
+                        if ([_phoneNum isEqualToString:[NSUSE_DEFO objectForKey:@"username"]]) {
+                            [_vivtoArray addObject:@"http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg"];
+                        }else{
+                          //  [LCProgressHUD showMessage:@"暂无视频信息"];
+                        }
                     
-                    for (NSDictionary * dicc in contentArr) {
-                        NSString * urlStr =[ToolClass isString:[NSString stringWithFormat:@"%@",[dicc objectForKey:@"url"]]];
-                        [_vivtoArray addObject:urlStr];
+                    }else{
+                        for (NSDictionary * dicc in contentArr) {
+                            NSString * urlStr =[ToolClass isString:[NSString stringWithFormat:@"%@",[dicc objectForKey:@"url"]]];
+                            [_vivtoArray addObject:urlStr];
+                        }
+ 
                     }
                     [_tableView reloadData];
                 }else
@@ -287,7 +311,7 @@
         ///[_tableView setContentOffset:CGPointZero animated:YES];
         _tableView.header.hidden=YES;
         _tableView.footer.hidden = YES;
-        [self getXiangCeVivo];
+      //  [self getXiangCeVivo];
     }
     [_tableView reloadData];
 }
@@ -460,7 +484,14 @@
         if (indexPath.section==0) {
             return 44;
         }else{
-            return 120;
+            //  cell1.nameLabel.text=_jibenArr[0][indexPath.row];
+            CGFloat aa =[ToolClass HeightForText:_jibenArr[indexPath.section][0] withSizeOfLabelFont:15 withWidthOfContent:250];
+            if (aa<44) {
+                return 44;
+            }else{
+              return aa;
+            }
+            
         }
    
     }else if (_currentIndex==1){
@@ -606,8 +637,11 @@
         XiangCeTableViewCell * cell3 =[XiangCeTableViewCell cellWithTableView:_tableView CellID:@"Cell3"];
         cell3.backgroundColor=[UIColor whiteColor];
         NSMutableArray * daArr =[NSMutableArray new];
+        
+        
         if (_imageArray.count!=0) {
              [daArr addObject:_imageArray];
+            NSLog(@"图片进入");
         }
         if (_vivtoArray.count!=0) {
              [daArr addObject:_vivtoArray];
@@ -786,17 +820,39 @@
     cell.IndePathBlock=^(NSIndexPath*indepath){
         if (indepath.section==0) {
             //图片
-            PhotoYuLanView * vc =[[PhotoYuLanView alloc]initWithFangDa:_imageArray NSindex:indepath.row Tagg:1];
-            __weak __typeof(vc)weakSelf = vc;
-            vc.dissBlock=^(){
-                 [weakSelf dissmiss];
-            };
-            [vc show];
+            NSLog(@"输出依稀%@",_imageArray[0]);
+            if ([_imageArray[0] isEqualToString:@"http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg"]) {
+                PhotoViewController * vc =[PhotoViewController new];
+                vc.numTag=1;
+                vc.phoneNum=_phoneNum;
+                vc.tagg=1;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else{
+                PhotoYuLanView * vc =[[PhotoYuLanView alloc]initWithFangDa:_imageArray NSindex:indepath.row Tagg:1];
+                __weak __typeof(vc)weakSelf = vc;
+                vc.dissBlock=^(){
+                    [weakSelf dissmiss];
+                };
+                [vc show];
+            }
+            
+            
         }else
         {
-            //视频
-            NSURL *movieUrl = [NSURL URLWithString:_vivtoArray[indepath.row]];
-             [[UIApplication sharedApplication] openURL:movieUrl];
+            
+            if ([_vivtoArray[0] isEqualToString:@"http://img3.redocn.com/tupian/20150430/mantenghuawenmodianshiliangbeijing_3924704.jpg"]) {
+                PhotoViewController * vc =[PhotoViewController new];
+                vc.numTag=1;
+                vc.phoneNum=_phoneNum;
+                vc.tagg=2;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else{
+                //视频
+                NSURL *movieUrl = [NSURL URLWithString:_vivtoArray[indepath.row]];
+                [[UIApplication sharedApplication] openURL:movieUrl];
+            }
+            
+           
         }
         
       

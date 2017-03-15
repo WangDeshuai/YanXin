@@ -9,7 +9,7 @@
 #import "SoSuoYanYuanViewController.h"
 #import "ShuJuDataModel.h"
 #import "yanyuanModel.h"
-#import "YanYuanKongJian.h"
+#import "YanYuanXiangQingVC.h"
 @interface SoSuoYanYuanViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchDisplayDelegate>
 {
     UITableView * _tableView;
@@ -55,7 +55,7 @@
     
     
     
-    view.backgroundColor=[UIColor colorWithRed:37/255.0 green:180/255.0 blue:237/255.0 alpha:1];
+    view.backgroundColor=DAO_COLOR;
     [self.view addSubview:view];
     
     [self jiexishuju];
@@ -74,7 +74,7 @@
     
     _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, KUAN, 44)];
     // 设置搜索范围的标题
-    _searchBar.scopeButtonTitles = @[@"按包含搜索",@"按首字符搜索"];
+    //_searchBar.scopeButtonTitles = @[@"按包含搜索",@"按首字符搜索"];
     _searchBar.placeholder = @"请输入您想要搜索的内容";
     // 用来显示搜索结果的
     
@@ -90,21 +90,41 @@
 }
 -(void)jiexishuju
 {
-    [ShuJuDataModel yanyuansousuosuccess:^(NSDictionary *dic) {
-        NSMutableArray * contentArr =[dic objectForKey:@"content"];
-        for (NSDictionary * di in contentArr ){
-            model=[[yanyuanModel alloc]initWithDic:di];
-            [_dataArray addObject:model.name];
-           
-            [_modelArray addObject:model];
+//    [ShuJuDataModel yanyuansousuosuccess:^(NSDictionary *dic) {
+//        NSMutableArray * contentArr =[dic objectForKey:@"content"];
+//        for (NSDictionary * di in contentArr ){
+//            model=[[yanyuanModel alloc]initWithDic:di];
+//            [_dataArray addObject:model.name];
+//           
+//            [_modelArray addObject:model];
+//            
+//            
+//        }
+//        [_tableView reloadData];
+//        
+//        
+//        
+//        
+//    } error:^(NSError *error) {
+//        
+//    }];
+    [Engine chaXunYanYuanContentCategory:@"0" Page:@"0" pagesize:@"0" success:^(NSDictionary *dic) {
+        NSString * code =[NSString stringWithFormat:@"%@",[dic objectForKey:@"code"]];
+        if ([code isEqualToString:@"1"]) {
+            NSArray * contentArr =[dic objectForKey:@"content"];
+            for (NSDictionary * dicc in contentArr) {
+                 model =[[yanyuanModel alloc]initWithDic:dicc];
+                [_dataArray addObject:model.name];
+                 [_modelArray addObject:model];
+
+            }
             
-            
+        }else{
+            [LCProgressHUD showMessage:[dic objectForKey:@"msg"]];
         }
+        
         [_tableView reloadData];
-        
-        
-        
-        
+       
     } error:^(NSError *error) {
         
     }];
@@ -128,26 +148,26 @@
     // 搜索之前需要上次搜索结果数据清空
     [_resultsArray removeAllObjects];
     // NSLog(@"%@",searchString);
-    // 判断
-    if (_selectedScope == 1) {
-        // 按照首字符搜索
-        for (NSString * string in _dataArray) {
-            
-            // 按首字符搜索
-            // 判断字符串是否以XX开头的
-            // Prefix前缀
-            // 是以searchString为前缀的,返回YES,否则返回NO
-            BOOL isOK =  [string hasPrefix:searchString];
-            // 说明从数组中取出的string是以搜索的字符串searchString开头的
-            // 符合条件,加到结果数组中
-            if (isOK == YES) {
-                
-                [_resultsArray addObject:string];
-            }
-            
-            // NSLog(@"%@",_resultsArray);
-        }
-    }
+//    // 判断
+//    if (_selectedScope == 1) {
+//        // 按照首字符搜索
+//        for (NSString * string in _dataArray) {
+//            
+//            // 按首字符搜索
+//            // 判断字符串是否以XX开头的
+//            // Prefix前缀
+//            // 是以searchString为前缀的,返回YES,否则返回NO
+//            BOOL isOK =  [string hasPrefix:searchString];
+//            // 说明从数组中取出的string是以搜索的字符串searchString开头的
+//            // 符合条件,加到结果数组中
+//            if (isOK == YES) {
+//                
+//                [_resultsArray addObject:string];
+//            }
+//            
+//            // NSLog(@"%@",_resultsArray);
+//        }
+//    }
     // 按照包含搜索
     if (_selectedScope == 0) {
         // 从数据源中搜索
@@ -195,12 +215,12 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    YanYuanKongJian * yvc =[YanYuanKongJian new];
+    YanYuanXiangQingVC * yvc =[YanYuanXiangQingVC new];
     for (int i = 0; i<_dataArray.count; i++) {
         NSString * name =_dataArray[i];
         if ([name isEqualToString:_resultsArray[indexPath.row]]) {
             yanyuanModel * md =_modelArray[i];
-            yvc.model12=md;
+            yvc.phoneNum=md.whoPhone;
             [self.navigationController pushViewController:yvc animated:YES];
         }
         
